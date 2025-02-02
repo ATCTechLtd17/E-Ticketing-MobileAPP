@@ -1,0 +1,1544 @@
+{
+	"info": {
+		"_postman_id": "90fb85ae-1e52-47a2-8bc9-5700dab64de6",
+		"name": "E-Ticket-DhakaBoss",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "31336479"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create Bus Counter Employee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiKzg4MDE3MTIzNDU2NzgiLCJyb2xlIjoiT1dORVIiLCJjb21wYW55TmFtZSI6IkhhbmlmIEVudGVycHJpc2UiLCJpYXQiOjE3MzczNTU1ODYsImV4cCI6MTczNzQ0MTk4Nn0.AcDfo4EPZPAJCP98084sJGWe--5S5crP8OOwUbkyUyU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/Hp/Downloads/images (1).jpg"
+								},
+								{
+									"key": "data",
+									"value": "{\n    \"password\": \"employee123\",\n    \"counterEmployee\": {\n        \"counterId\":\"654794a2-7b70-4e5e-812d-3eed2a65f06b\",\n        \"name\": \"Ayesha Akter\",\n        \"email\": \"ayesha.akter@example.com\",\n        \"contactNumber\": \"01798765432\",\n        \"emergencyContactNumber\": \"01812345678\",\n        \"dateOfBirth\": \"1988-11-25\",\n        \"gender\":\"FEMALE\",\n        \"presentAddress\": \"Gulshan, Dhaka, Bangladesh\",\n        \"permanentAddress\": \"Barisal, Bangladesh\",\n        \"nidCardNumber\": \"1234567898765\"\n    }\n}",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{URL}}/user/create-bus-couter-employee"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Company Owner",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{SuperAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": "{{URL}}/user/create-owner"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Bus Company Owner",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiKzg4MDE3MTIzNDU2NzgiLCJyb2xlIjoiT1dORVIiLCJjb21wYW55TmFtZSI6IkFrb3RhIEVudGVycHJpc2UiLCJpYXQiOjE3MzcyODMzMDYsImV4cCI6MTczNzM2OTcwNn0.V5WY1iiN9u1drcDpuTy38CjXrAykmp8xPHx-nk2R2Jo",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"strongpassword456\",\r\n    \"companyOwner\": {\r\n        \"fullName\": \"Hasan Ahmed\",\r\n        \"email\": \"hasan.ahmed@example.com\",\r\n        \"contactNumber\": \"+8801719876542\",\r\n        \"emergencyContactNumber\": \"+8801919876544\",\r\n        \"presentAddress\": \"House 22, Road 7, Dhanmondi, Dhaka\",\r\n        \"permanentAddress\": \"Village: Shantinagar, Upazila: Savar, District: Dhaka\",\r\n        \"gender\": \"MALE\",\r\n        \"dateOfBirth\": \"1985-03-25\",\r\n        \"transportType\": \"BUS\",\r\n        \"companyName\": \"Hasan Transport Ltd.\",\r\n        \"nidCardNumber\": \"1985032543210\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Bus Company Employee",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiKzg4MDE3MTIzNDU2NzgiLCJyb2xlIjoiT1dORVIiLCJjb21wYW55TmFtZSI6IkhhbmlmIEVudGVycHJpc2UiLCJpYXQiOjE3MzczNTU1ODYsImV4cCI6MTczNzQ0MTk4Nn0.AcDfo4EPZPAJCP98084sJGWe--5S5crP8OOwUbkyUyU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"strongpassword456\",\r\n    \"companyOwner\": {\r\n        \"fullName\": \"Hasan Ahmed\",\r\n        \"email\": \"hasan.ahmed@example.com\",\r\n        \"contactNumber\": \"+8801719876542\",\r\n        \"emergencyContactNumber\": \"+8801919876544\",\r\n        \"presentAddress\": \"House 22, Road 7, Dhanmondi, Dhaka\",\r\n        \"permanentAddress\": \"Village: Shantinagar, Upazila: Savar, District: Dhaka\",\r\n        \"gender\": \"MALE\",\r\n        \"dateOfBirth\": \"1985-03-25\",\r\n        \"transportType\": \"BUS\",\r\n        \"companyName\": \"Hasan Transport Ltd.\",\r\n        \"nidCardNumber\": \"1985032543210\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/user/get-all-employee"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bus Company",
+			"item": [
+				{
+					"name": "Create Bus Company",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiKzg4MDE3MTIzNDU2NzgiLCJyb2xlIjoiT1dORVIiLCJjb21wYW55TmFtZSI6IkhhbmlmIEVudGVycHJpc2UiLCJpYXQiOjE3Mzc2MjQ1NDEsImV4cCI6MTczNzcxMDk0MX0.7HbfjDX3dDqkrM6M-IkjcY_V5yEN8rNAfmBvh28_vIc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"companyName\": \"Hanif Enterprise\",\r\n    \"email\": \"info@hanifen1terprise.com\",\r\n    \"contactNumber\": \"+8801711111110\",\r\n    \"emergencyContactNumber\": \"+8801911111119\",\r\n    \"logo\": \"https://res.cloudinary.com/db5i4dult/image/upload/v1736056695/hanif-logo_qrpghh.png\",\r\n    \"address\": \"Kamalapur Bus Terminal, Dhaka, Bangladesh\",\r\n    \"busQuantity\": 120\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/bus/create-company"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Bus Company Owner",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Owner}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/Hp/Downloads/images (1).jpg"
+								},
+								{
+									"key": "data",
+									"value": "{\n    \"password\": \"owner123\",\n    \"companyOwner\": {\n        \"fullName\": \"Karim Uddin\",\n        \"email\": \"rahim1.uddin@example.com\",\n        \"contactNumber\": \"+8801712345678\",\n        \"emergencyContactNumber\": \"+8801912345678\",\n        \"presentAddress\": \"House 15, Block C, Mirpur, Dhaka\",\n        \"permanentAddress\": \"Village: Charpara, Upazila: Trishal, District: Mymensingh\",\n        \"gender\": \"MALE\",\n        \"dateOfBirth\": \"1990-05-15\",\n        \"transportType\": \"BUS\",\n        \"companyName\": \"Hanif Enterprise\",\n        \"nidCardNumber\": \"1990051234567\"\n    }\n}",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{URL}}/user/create-owner"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Passenger Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"contactNumber\": \"+8801717345679\",\r\n    \"password\": \"amipass123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Super Admin Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"contactNumber\": \"01701701701\",\r\n    \"password\": \"superAdmin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Bus Company Owner Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"contactNumber\": \"+8801712345678\",\r\n    \"password\": \"owner123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Bus Company Admin Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"contactNumber\": \"0172374909069\",\r\n    \"password\": \"admin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Passenger Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"contactNumber\": \"+8801717345678\",\r\n    \"password\": \"SecureP@ssword123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Sign Up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fullName\": \"Md. Hasan Ahmed\",\r\n    \"email\": \"emamulmursalin48@gmail.com\",\r\n    \"contactNumber\": \"+8801717345677\",\r\n    \"emergencyContactNumber\": \"+8801812345673\",\r\n    \"gender\": \"MALE\",\r\n    \"dateOfBirth\": \"1990-05-15\",\r\n    \"password\": \"SecureP@ssword123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/auth/signup"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{URL}}/auth/refresh-token"
+					},
+					"response": []
+				},
+				{
+					"name": "Forget Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"sohagali.ru.ac@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/auth/forget-password"
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvaGFnYWxpLnJ1LmFjQGdtYWlsLmNvbSIsImlhdCI6MTczNTY0MjA2NywiZXhwIjoxNzM1NjQyMzY3fQ.7UNuK3J6oq85y48N5f4fytqTqapX2gNIu7_TDE0aJuw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\":\"amipass123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/auth/reset-password"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AirLines",
+			"item": [
+				{
+					"name": "Create Air Lines",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/Hp/Downloads/b.png"
+								},
+								{
+									"key": "data",
+									"value": "{\n    \"airLinesName\": \"AeroJet Airlines\",\n    \"email\": \"info@aerojet.com\",\n    \"contactNumber\": \"+9876543210\",\n    \"emergencyContactNumber\": \"+1029384756\",\n    \"address\": \"Los Angeles, CA, USA\",\n    \"planeQuantity\": 75\n}",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{URL}}/air/create-airlines"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Air Lines",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{SuperAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"airLinesName\": \"Bangladesh Airways\",\r\n    \"email\": \"info@bangladeshairways.com\",\r\n    \"contactNumber\": \"+8801234567890\",\r\n    \"emergencyContactNumber\": \"+8809876543210\",\r\n    \"address\": \"Dhaka, 1000, Bangladesh\",\r\n    \"planeQuantity\": 25\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/air/get-airlines?page=1&limit=3",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"air",
+								"get-airlines"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Airline",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{SuperAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"airLinesName\": \"Bangladesh Airways\",\r\n    \"email\": \"info@bangladeshairways.com\",\r\n    \"contactNumber\": \"+8801234567890\",\r\n    \"emergencyContactNumber\": \"+8809876543210\",\r\n    \"address\": \"Dhaka, 1000, Bangladesh\",\r\n    \"planeQuantity\": 25\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/air/get-airlines/e649dfaa-d237-42c3-bea2-38f611e81134"
+					},
+					"response": []
+				},
+				{
+					"name": "Update  Air Line",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{SuperAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"info1@bangladeshairways.com\",\r\n    \"planeQuantity\": 20\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/air/e649dfaa-d237-42c3-bea2-38f611e81134"
+					},
+					"response": []
+				},
+				{
+					"name": "Deleted Airlines",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{SuperAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/air/15be877f-b911-4054-ae3f-625071e5c396"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Airports",
+			"item": [
+				{
+					"name": "Create Airport",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{SuperAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"airPortName\": \"Seattle-Tacoma International Airport\",\r\n    \"city\": \"Seattle\",\r\n    \"country\": \"United States\"\r\n  },\r\n  {\r\n    \"airPortName\": \"Boston Logan International Airport\",\r\n    \"city\": \"Boston\",\r\n    \"country\": \"United States\"\r\n  },\r\n  {\r\n    \"airPortName\": \"Phoenix Sky Harbor International Airport\",\r\n    \"city\": \"Phoenix\",\r\n    \"country\": \"United States\"\r\n  },\r\n  {\r\n    \"airPortName\": \"Philadelphia International Airport\",\r\n    \"city\": \"Philadelphia\",\r\n    \"country\": \"United States\"\r\n  },\r\n  {\r\n    \"airPortName\": \"San Diego International Airport\",\r\n    \"city\": \"San Diego\",\r\n    \"country\": \"United States\"\r\n  },\r\n  {\r\n    \"airPortName\": \"Miami International Airport\",\r\n    \"city\": \"Miami\",\r\n    \"country\": \"United States\"\r\n  },\r\n  {\r\n    \"airPortName\": \"London City Airport\",\r\n    \"city\": \"London\",\r\n    \"country\": \"United Kingdom\"\r\n  },\r\n  {\r\n    \"airPortName\": \"Liverpool John Lennon Airport\",\r\n    \"city\": \"Liverpool\",\r\n    \"country\": \"United Kingdom\"\r\n  },\r\n  {\r\n    \"airPortName\": \"Newcastle International Airport\",\r\n    \"city\": \"Newcastle\",\r\n    \"country\": \"United Kingdom\"\r\n  },\r\n  {\r\n    \"airPortName\": \"Bristol Airport\",\r\n    \"city\": \"Bristol\",\r\n    \"country\": \"United Kingdom\"\r\n  },\r\n  {\r\n    \"airPortName\": \"Lille Airport\",\r\n    \"city\": \"Lille\",\r\n    \"country\": \"France\"\r\n  },\r\n  {\r\n    \"airPortName\": \"Strasbourg Airport\",\r\n    \"city\": \"Strasbourg\",\r\n    \"country\": \"France\"\r\n  },\r\n  {\r\n    \"airPortName\": \"Nantes Atlantique Airport\",\r\n    \"city\": \"Nantes\",\r\n    \"country\": \"France\"\r\n  },\r\n  {\r\n    \"airPortName\": \"Montpellier–Méditerranée Airport\",\r\n    \"city\": \"Montpellier\",\r\n    \"country\": \"France\"\r\n  },\r\n  {\r\n    \"airPortName\": \"Cannes Mandelieu Airport\",\r\n    \"city\": \"Cannes\",\r\n    \"country\": \"France\"\r\n  },\r\n  {\r\n    \"airPortName\": \"Cologne Bonn Airport\",\r\n    \"city\": \"Cologne\",\r\n    \"country\": \"Germany\"\r\n  },\r\n  {\r\n    \"airPortName\": \"Stuttgart Airport\",\r\n    \"city\": \"Stuttgart\",\r\n    \"country\": \"Germany\"\r\n  },\r\n  {\r\n    \"airPortName\": \"Nuremberg Airport\",\r\n    \"city\": \"Nuremberg\",\r\n    \"country\": \"Germany\"\r\n  },\r\n  {\r\n    \"airPortName\": \"Leipzig/Halle Airport\",\r\n    \"city\": \"Leipzig\",\r\n    \"country\": \"Germany\"\r\n  },\r\n  {\r\n    \"airPortName\": \"Bremen Airport\",\r\n    \"city\": \"Bremen\",\r\n    \"country\": \"Germany\"\r\n  }\r\n]\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/airport/create-airport"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Airport",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{SuperAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"airPortName\": \"Hong Kong International Airport\",\r\n    \"city\": \"Hong Kong\",\r\n    \"country\": \"Hong Kong\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/airport?searchTerm=United States",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"airport"
+							],
+							"query": [
+								{
+									"key": "city",
+									"value": "New York",
+									"disabled": true
+								},
+								{
+									"key": "searchTerm",
+									"value": "United States"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Plane Details",
+			"item": [
+				{
+					"name": "Create Plane",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{SuperAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"planeName\": \"Boeing 737\",\r\n    \"planeId\": \"BOE737\",\r\n    \"airLinesId\": \"de274062-8277-4181-832f-b80a81fa89ba\",\r\n    \"flightType\": \"DOMESTIC\",\r\n    \"capacity\": 180\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/plane/create-plane"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Plane",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{SuperAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"planeName\": \"Boeing 737\",\r\n    \"planeId\": \"BOE737\",\r\n    \"airLinesId\": \"15be877f-b911-4054-ae3f-625071e5c396\",\r\n    \"flightType\": \"DOMESTIC\",\r\n    \"capacity\": 180\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/plane/get-all-planes?page=1&limit=3&airLinesId=15be877f-b911-4054-ae3f-625071e5c396",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"plane",
+								"get-all-planes"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "3"
+								},
+								{
+									"key": "airLinesId",
+									"value": "15be877f-b911-4054-ae3f-625071e5c396"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Single Plane",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{SuperAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"planeName\": \"Boeing 739\",\r\n    \"planeId\": \"BOE739\",\r\n    \"capacity\": 185\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/plane/6f3c3e45-1898-491e-afd1-af8dba36d31c"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Flight",
+			"item": [
+				{
+					"name": "Create Flight",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{SuperAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"flightNumber\": \"BS162\",\r\n  \"planeId\": \"22a1a7c9-f556-4292-b68c-b190c4333ded\",\r\n  \"fromLocation\":\"Rajshahi\" ,\r\n  \"toLocation\":\"Dhaka\" ,\r\n  \"duration\": 0.8,\r\n  \"price\": 2500.00,\r\n  \"isRecurring\": true,\r\n  \"ticketType\": \"ONE_WAY\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/flight/create-flight"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Flight",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{SuperAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"planeName\": \"Boeing 737\",\r\n    \"planeId\": \"BOE737\",\r\n    \"airLinesId\": \"15be877f-b911-4054-ae3f-625071e5c396\",\r\n    \"flightType\": \"DOMESTIC\",\r\n    \"capacity\": 180\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/flight/get-flights",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"flight",
+								"get-flights"
+							],
+							"query": [
+								{
+									"key": "fromLocation",
+									"value": "Dhaka",
+									"disabled": true
+								},
+								{
+									"key": "toLocation",
+									"value": "Rajshahi",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Single Plane",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{SuperAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"planeName\": \"Boeing 739\",\r\n    \"planeId\": \"BOE739\",\r\n    \"capacity\": 185\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/plane/6f3c3e45-1898-491e-afd1-af8dba36d31c"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Flight Schedule",
+			"item": [
+				{
+					"name": "Create Schedule",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{SuperAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"flightId\": \"d3a14fda-1b66-4727-8069-c411bcae8f04\",\r\n  \"departureTime\": \"2025-01-04T08:30:00Z\",\r\n  \"arrivalTime\": \"2025-01-04T12:45:00Z\",\r\n  \"daysOfWeek\": [\"Monday\", \"Wednesday\", \"Friday\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/schedule/flight-schedule"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Plane",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{SuperAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"planeName\": \"Boeing 737\",\r\n    \"planeId\": \"BOE737\",\r\n    \"airLinesId\": \"15be877f-b911-4054-ae3f-625071e5c396\",\r\n    \"flightType\": \"DOMESTIC\",\r\n    \"capacity\": 180\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/schedule"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Single Plane",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{SuperAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"planeName\": \"Boeing 739\",\r\n    \"planeId\": \"BOE739\",\r\n    \"capacity\": 185\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/plane/6f3c3e45-1898-491e-afd1-af8dba36d31c"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bus",
+			"item": [
+				{
+					"name": "Create Bus Detail",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiKzg4MDE3MTIzNDU2NzgiLCJyb2xlIjoiT1dORVIiLCJjb21wYW55TmFtZSI6IkhhbmlmIEVudGVycHJpc2UiLCJpYXQiOjE3Mzc2MjQ1NDEsImV4cCI6MTczNzcxMDk0MX0.7HbfjDX3dDqkrM6M-IkjcY_V5yEN8rNAfmBvh28_vIc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"counterId\":\"2180d26f-3867-40d7-a1ca-26e906f72d95\",\r\n    \"busName\": \"Hanif Enterprise\",\r\n    \"busId\": \"bus-001\",\r\n    \"busType\": \"AC\",\r\n    \"seatCapacity\": 45,\r\n    \"coachType\": \"Semi-Sleeper\",\r\n    \"seatAvailable\": 45,\r\n    \"ticketPrice\": 1200.50,\r\n    \"busNumber\": \"DL-01-AB-1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/bus-details/create-bus-details"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Bus",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiKzg4MDE3MTIzNDU2NzgiLCJyb2xlIjoiT1dORVIiLCJjb21wYW55TmFtZSI6IkhhbmlmIEVudGVycHJpc2UiLCJpYXQiOjE3Mzc2MTEzMDYsImV4cCI6MTczNzY5NzcwNn0.adTkPvsS6LqQ2PLhS2VlEbNgzZquPkX9KvXLhwW0nlk",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"busStopName\": \"Mohakhali Bus Terminal\",\r\n    \"fromLocation\": \"Dhaka\",\r\n    \"toLocation\": \"Sylhet\",\r\n    \"address\": \"Mohakhali, Dhaka, Bangladesh\"\r\n  },\r\n  {\r\n    \"busStopName\": \"Sayedabad Bus Terminal\",\r\n    \"fromLocation\": \"Dhaka\",\r\n    \"toLocation\": \"Khulna\",\r\n    \"address\": \"Sayedabad, Dhaka, Bangladesh\"\r\n  },\r\n  {\r\n    \"busStopName\": \"Kamalapur Railway Bus Stop\",\r\n    \"fromLocation\": \"Dhaka\",\r\n    \"toLocation\": \"Rajshahi\",\r\n    \"address\": \"Kamalapur, Dhaka, Bangladesh\"\r\n  },\r\n  {\r\n    \"busStopName\": \"Chittagong Bus Terminal\",\r\n    \"fromLocation\": \"Chittagong\",\r\n    \"toLocation\": \"Cox's Bazar\",\r\n    \"address\": \"Dampara, Chittagong, Bangladesh\"\r\n  },\r\n  {\r\n    \"busStopName\": \"Shibchar Bus Stand\",\r\n    \"fromLocation\": \"Madaripur\",\r\n    \"toLocation\": \"Barisal\",\r\n    \"address\": \"Shibchar, Madaripur, Bangladesh\"\r\n  },\r\n  {\r\n    \"busStopName\": \"Bogra Bus Terminal\",\r\n    \"fromLocation\": \"Bogra\",\r\n    \"toLocation\": \"Dhaka\",\r\n    \"address\": \"Bogra City Bypass, Bogra, Bangladesh\"\r\n  },\r\n  {\r\n    \"busStopName\": \"Sylhet Bus Terminal\",\r\n    \"fromLocation\": \"Sylhet\",\r\n    \"toLocation\": \"Dhaka\",\r\n    \"address\": \"Kadamtali, Sylhet, Bangladesh\"\r\n  },\r\n  {\r\n    \"busStopName\": \"Khulna Bus Terminal\",\r\n    \"fromLocation\": \"Khulna\",\r\n    \"toLocation\": \"Dhaka\",\r\n    \"address\": \"Sonadanga, Khulna, Bangladesh\"\r\n  },\r\n  {\r\n    \"busStopName\": \"Barisal Bus Terminal\",\r\n    \"fromLocation\": \"Barisal\",\r\n    \"toLocation\": \"Dhaka\",\r\n    \"address\": \"Nathullabad, Barisal, Bangladesh\"\r\n  },\r\n  {\r\n    \"busStopName\": \"Rangpur Bus Terminal\",\r\n    \"fromLocation\": \"Rangpur\",\r\n    \"toLocation\": \"Dhaka\",\r\n    \"address\": \"Modern More, Rangpur, Bangladesh\"\r\n  }\r\n]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/bus-details/get-bus-search?startPoint=Natore&endPoint=Dhaka&departureDate=2025-01-31",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"bus-details",
+								"get-bus-search"
+							],
+							"query": [
+								{
+									"key": "startPoint",
+									"value": "Natore"
+								},
+								{
+									"key": "endPoint",
+									"value": "Dhaka"
+								},
+								{
+									"key": "departureDate",
+									"value": "2025-01-31"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bus Counter",
+			"item": [
+				{
+					"name": "Create Bus Counter",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiKzg4MDE3MTIzNDU2NzgiLCJyb2xlIjoiT1dORVIiLCJjb21wYW55TmFtZSI6IkhhbmlmIEVudGVycHJpc2UiLCJpYXQiOjE3Mzc2MjQ1NDEsImV4cCI6MTczNzcxMDk0MX0.7HbfjDX3dDqkrM6M-IkjcY_V5yEN8rNAfmBvh28_vIc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"counterName\": \"Rajshahi Central Counter\",\r\n  \"busStoppageLocation\": \"Shaheb Bazar\",\r\n  \"email\": \"contact@rajshahicounter.com\",\r\n  \"contactNumber\": \"+8801712345678\",\r\n  \"emergencyContactNumber\": \"+8801912345678\",\r\n  \"district\": \"Rajshahi\",\r\n  \"division\": \"Rajshahi\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/bus-counter/create-bus-counter"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Bus Counter",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiKzg4MDE3MTIzNDU2NzgiLCJyb2xlIjoiT1dORVIiLCJjb21wYW55TmFtZSI6IkhhbmlmIEVudGVycHJpc2UiLCJpYXQiOjE3Mzc2MTEzMDYsImV4cCI6MTczNzY5NzcwNn0.adTkPvsS6LqQ2PLhS2VlEbNgzZquPkX9KvXLhwW0nlk",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"busStopName\": \"Mohakhali Bus Terminal\",\r\n    \"fromLocation\": \"Dhaka\",\r\n    \"toLocation\": \"Sylhet\",\r\n    \"address\": \"Mohakhali, Dhaka, Bangladesh\"\r\n  },\r\n  {\r\n    \"busStopName\": \"Sayedabad Bus Terminal\",\r\n    \"fromLocation\": \"Dhaka\",\r\n    \"toLocation\": \"Khulna\",\r\n    \"address\": \"Sayedabad, Dhaka, Bangladesh\"\r\n  },\r\n  {\r\n    \"busStopName\": \"Kamalapur Railway Bus Stop\",\r\n    \"fromLocation\": \"Dhaka\",\r\n    \"toLocation\": \"Rajshahi\",\r\n    \"address\": \"Kamalapur, Dhaka, Bangladesh\"\r\n  },\r\n  {\r\n    \"busStopName\": \"Chittagong Bus Terminal\",\r\n    \"fromLocation\": \"Chittagong\",\r\n    \"toLocation\": \"Cox's Bazar\",\r\n    \"address\": \"Dampara, Chittagong, Bangladesh\"\r\n  },\r\n  {\r\n    \"busStopName\": \"Shibchar Bus Stand\",\r\n    \"fromLocation\": \"Madaripur\",\r\n    \"toLocation\": \"Barisal\",\r\n    \"address\": \"Shibchar, Madaripur, Bangladesh\"\r\n  },\r\n  {\r\n    \"busStopName\": \"Bogra Bus Terminal\",\r\n    \"fromLocation\": \"Bogra\",\r\n    \"toLocation\": \"Dhaka\",\r\n    \"address\": \"Bogra City Bypass, Bogra, Bangladesh\"\r\n  },\r\n  {\r\n    \"busStopName\": \"Sylhet Bus Terminal\",\r\n    \"fromLocation\": \"Sylhet\",\r\n    \"toLocation\": \"Dhaka\",\r\n    \"address\": \"Kadamtali, Sylhet, Bangladesh\"\r\n  },\r\n  {\r\n    \"busStopName\": \"Khulna Bus Terminal\",\r\n    \"fromLocation\": \"Khulna\",\r\n    \"toLocation\": \"Dhaka\",\r\n    \"address\": \"Sonadanga, Khulna, Bangladesh\"\r\n  },\r\n  {\r\n    \"busStopName\": \"Barisal Bus Terminal\",\r\n    \"fromLocation\": \"Barisal\",\r\n    \"toLocation\": \"Dhaka\",\r\n    \"address\": \"Nathullabad, Barisal, Bangladesh\"\r\n  },\r\n  {\r\n    \"busStopName\": \"Rangpur Bus Terminal\",\r\n    \"fromLocation\": \"Rangpur\",\r\n    \"toLocation\": \"Dhaka\",\r\n    \"address\": \"Modern More, Rangpur, Bangladesh\"\r\n  }\r\n]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/bus-counter"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bus Shedule Create",
+			"item": [
+				{
+					"name": "Create Bus Schedule",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiKzg4MDE3MTIzNDU2NzgiLCJyb2xlIjoiT1dORVIiLCJjb21wYW55TmFtZSI6IkhhbmlmIEVudGVycHJpc2UiLCJpYXQiOjE3Mzc2MjQ1NDEsImV4cCI6MTczNzcxMDk0MX0.7HbfjDX3dDqkrM6M-IkjcY_V5yEN8rNAfmBvh28_vIc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"busId\": \"567f53ac-866d-40a8-b190-e70422a6a06a\",\r\n    \"departureDate\": \"2025-01-25\",\r\n    \"startPoint\": \"Dhaka\",\r\n    \"departureTimeForward\": \"2:00 PM\",\r\n    \"departureTimeBackward\":\"3.00 PM\",\r\n    \"ticketPrice\": 1220,\r\n    \"endPoint\": \"Rajshahi\",\r\n    \"arrivalTimeForward\": \"6:30 PM\",\r\n    \"arrivalTimeBackward\":\"600 PM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/bus-schedule/create-bus-schedule"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Bus Schedule",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiKzg4MDE3MTIzNDU2NzgiLCJyb2xlIjoiT1dORVIiLCJjb21wYW55TmFtZSI6IkhhbmlmIEVudGVycHJpc2UiLCJpYXQiOjE3Mzc3ODk4MjMsImV4cCI6MTczNzg3NjIyM30.bcduRpzCrhQY5pZgTT1k2bU0FYjk-jIwUh-KIiPiGjk",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"startingDate\": \"2025-01-22\",\r\n  \"startPoint\": \"Rajshahi\",\r\n  \"endPoint\": \"Dhaka\",\r\n  \"departureTimeForward\": \"3.00AM\",\r\n  \"arrivalTimeForward\": \"9.00PM\",\r\n  \"departureTimeBackward\": \"9.00PM\",\r\n  \"arrivalTimeBackward\": \"3.00AM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/bus-schedule?busId=567f53ac-866d-40a8-b190-e70422a6a06a&startMonth=2025-01-01&endMonth=2025-01-31",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"bus-schedule"
+							],
+							"query": [
+								{
+									"key": "busId",
+									"value": "567f53ac-866d-40a8-b190-e70422a6a06a"
+								},
+								{
+									"key": "auth",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "startMonth",
+									"value": "2025-01-01"
+								},
+								{
+									"key": "endMonth",
+									"value": "2025-01-31"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Running Bus",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiKzg4MDE3MTIzNDU2NzgiLCJyb2xlIjoiT1dORVIiLCJjb21wYW55TmFtZSI6IkhhbmlmIEVudGVycHJpc2UiLCJpYXQiOjE3Mzc1MjIxOTMsImV4cCI6MTczNzYwODU5M30.5HEzblKKtej_jA8UYiRY5sqvirUeYJKzTT_KfwMnay8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"startingDate\": \"2025-01-22\",\r\n  \"startPoint\": \"Rajshahi\",\r\n  \"endPoint\": \"Dhaka\",\r\n  \"departureTimeForward\": \"3.00AM\",\r\n  \"arrivalTimeForward\": \"9.00PM\",\r\n  \"departureTimeBackward\": \"9.00PM\",\r\n  \"arrivalTimeBackward\": \"3.00AM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/bus-schedule/get-running-today",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"bus-schedule",
+								"get-running-today"
+							],
+							"query": [
+								{
+									"key": "auth",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bus Routes",
+			"item": [
+				{
+					"name": "Create Bus Schedule",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiKzg4MDE3MTIzNDU2NzgiLCJyb2xlIjoiT1dORVIiLCJjb21wYW55TmFtZSI6IkhhbmlmIEVudGVycHJpc2UiLCJpYXQiOjE3Mzc2MTEzMDYsImV4cCI6MTczNzY5NzcwNn0.adTkPvsS6LqQ2PLhS2VlEbNgzZquPkX9KvXLhwW0nlk",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"busId\": \"567f53ac-866d-40a8-b190-e70422a6a06a\",\r\n        \"stoppageLocation\": \"Nator\",\r\n        \"stoppageTime\": \"4:00 PM\",\r\n        \"ticketPrice\": 1200\r\n    },\r\n    {\r\n        \"busId\": \"567f53ac-866d-40a8-b190-e70422a6a06a\",\r\n        \"stoppageLocation\": \"Pabna\",\r\n        \"stoppageTime\": \"5:00 PM\",\r\n        \"ticketPrice\": 1300\r\n    },\r\n    {\r\n        \"busId\": \"567f53ac-866d-40a8-b190-e70422a6a06a\",\r\n        \"stoppageLocation\": \"Bogura\",\r\n        \"stoppageTime\": \"5:45 PM\",\r\n        \"ticketPrice\": 1350\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/bus-route/create-bus-route"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Bus Schedule",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiKzg4MDE3MTIzNDU2NzgiLCJyb2xlIjoiT1dORVIiLCJjb21wYW55TmFtZSI6IkhhbmlmIEVudGVycHJpc2UiLCJpYXQiOjE3Mzc1MjIxOTMsImV4cCI6MTczNzYwODU5M30.5HEzblKKtej_jA8UYiRY5sqvirUeYJKzTT_KfwMnay8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"startingDate\": \"2025-01-22\",\r\n  \"startPoint\": \"Rajshahi\",\r\n  \"endPoint\": \"Dhaka\",\r\n  \"departureTimeForward\": \"3.00AM\",\r\n  \"arrivalTimeForward\": \"9.00PM\",\r\n  \"departureTimeBackward\": \"9.00PM\",\r\n  \"arrivalTimeBackward\": \"3.00AM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/bus-schedule",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"bus-schedule"
+							],
+							"query": [
+								{
+									"key": "auth",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Running Bus",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiKzg4MDE3MTIzNDU2NzgiLCJyb2xlIjoiT1dORVIiLCJjb21wYW55TmFtZSI6IkhhbmlmIEVudGVycHJpc2UiLCJpYXQiOjE3Mzc1MjIxOTMsImV4cCI6MTczNzYwODU5M30.5HEzblKKtej_jA8UYiRY5sqvirUeYJKzTT_KfwMnay8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"startingDate\": \"2025-01-22\",\r\n  \"startPoint\": \"Rajshahi\",\r\n  \"endPoint\": \"Dhaka\",\r\n  \"departureTimeForward\": \"3.00AM\",\r\n  \"arrivalTimeForward\": \"9.00PM\",\r\n  \"departureTimeBackward\": \"9.00PM\",\r\n  \"arrivalTimeBackward\": \"3.00AM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/bus-schedule",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"bus-schedule"
+							],
+							"query": [
+								{
+									"key": "auth",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "District Create",
+			"item": [
+				{
+					"name": "Create Bus Disttrict",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiKzg4MDE3MTIzNDU2NzgiLCJyb2xlIjoiT1dORVIiLCJjb21wYW55TmFtZSI6IkhhbmlmIEVudGVycHJpc2UiLCJpYXQiOjE3Mzc2MTEzMDYsImV4cCI6MTczNzY5NzcwNn0.adTkPvsS6LqQ2PLhS2VlEbNgzZquPkX9KvXLhwW0nlk",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"busId\": \"567f53ac-866d-40a8-b190-e70422a6a06a\",\r\n        \"stoppageLocation\": \"Nator\",\r\n        \"stoppageTime\": \"4:00 PM\",\r\n        \"ticketPrice\": 1200\r\n    },\r\n    {\r\n        \"busId\": \"567f53ac-866d-40a8-b190-e70422a6a06a\",\r\n        \"stoppageLocation\": \"Pabna\",\r\n        \"stoppageTime\": \"5:00 PM\",\r\n        \"ticketPrice\": 1300\r\n    },\r\n    {\r\n        \"busId\": \"567f53ac-866d-40a8-b190-e70422a6a06a\",\r\n        \"stoppageLocation\": \"Bogura\",\r\n        \"stoppageTime\": \"5:45 PM\",\r\n        \"ticketPrice\": 1350\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/bus-route/create-bus-route"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Bus District",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiKzg4MDE3MTIzNDU2NzgiLCJyb2xlIjoiT1dORVIiLCJjb21wYW55TmFtZSI6IkhhbmlmIEVudGVycHJpc2UiLCJpYXQiOjE3Mzc1MjIxOTMsImV4cCI6MTczNzYwODU5M30.5HEzblKKtej_jA8UYiRY5sqvirUeYJKzTT_KfwMnay8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"startingDate\": \"2025-01-22\",\r\n  \"startPoint\": \"Rajshahi\",\r\n  \"endPoint\": \"Dhaka\",\r\n  \"departureTimeForward\": \"3.00AM\",\r\n  \"arrivalTimeForward\": \"9.00PM\",\r\n  \"departureTimeBackward\": \"9.00PM\",\r\n  \"arrivalTimeBackward\": \"3.00AM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/bus-schedule",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"bus-schedule"
+							],
+							"query": [
+								{
+									"key": "auth",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Running Bus",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiKzg4MDE3MTIzNDU2NzgiLCJyb2xlIjoiT1dORVIiLCJjb21wYW55TmFtZSI6IkhhbmlmIEVudGVycHJpc2UiLCJpYXQiOjE3Mzc1MjIxOTMsImV4cCI6MTczNzYwODU5M30.5HEzblKKtej_jA8UYiRY5sqvirUeYJKzTT_KfwMnay8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"startingDate\": \"2025-01-22\",\r\n  \"startPoint\": \"Rajshahi\",\r\n  \"endPoint\": \"Dhaka\",\r\n  \"departureTimeForward\": \"3.00AM\",\r\n  \"arrivalTimeForward\": \"9.00PM\",\r\n  \"departureTimeBackward\": \"9.00PM\",\r\n  \"arrivalTimeBackward\": \"3.00AM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/bus-schedule",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"bus-schedule"
+							],
+							"query": [
+								{
+									"key": "auth",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bus Ticket",
+			"item": [
+				{
+					"name": "Block the ticket",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiKzg4MDE3MTIzNDU2NzgiLCJyb2xlIjoiT1dORVIiLCJjb21wYW55TmFtZSI6IkhhbmlmIEVudGVycHJpc2UiLCJpYXQiOjE3Mzc2MTEzMDYsImV4cCI6MTczNzY5NzcwNn0.adTkPvsS6LqQ2PLhS2VlEbNgzZquPkX9KvXLhwW0nlk",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"busId\": \"567f53ac-866d-40a8-b190-e70422a6a06a\",\r\n        \"stoppageLocation\": \"Nator\",\r\n        \"stoppageTime\": \"4:00 PM\",\r\n        \"ticketPrice\": 1200\r\n    },\r\n    {\r\n        \"busId\": \"567f53ac-866d-40a8-b190-e70422a6a06a\",\r\n        \"stoppageLocation\": \"Pabna\",\r\n        \"stoppageTime\": \"5:00 PM\",\r\n        \"ticketPrice\": 1300\r\n    },\r\n    {\r\n        \"busId\": \"567f53ac-866d-40a8-b190-e70422a6a06a\",\r\n        \"stoppageLocation\": \"Bogura\",\r\n        \"stoppageTime\": \"5:45 PM\",\r\n        \"ticketPrice\": 1350\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/bus-route/create-bus-route"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Bus Seat Block",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiKzg4MDE3MTIzNDU2NzgiLCJyb2xlIjoiT1dORVIiLCJjb21wYW55TmFtZSI6IkhhbmlmIEVudGVycHJpc2UiLCJpYXQiOjE3Mzc1MjIxOTMsImV4cCI6MTczNzYwODU5M30.5HEzblKKtej_jA8UYiRY5sqvirUeYJKzTT_KfwMnay8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"startingDate\": \"2025-01-22\",\r\n  \"startPoint\": \"Rajshahi\",\r\n  \"endPoint\": \"Dhaka\",\r\n  \"departureTimeForward\": \"3.00AM\",\r\n  \"arrivalTimeForward\": \"9.00PM\",\r\n  \"departureTimeBackward\": \"9.00PM\",\r\n  \"arrivalTimeBackward\": \"3.00AM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/bus-schedule",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"bus-schedule"
+							],
+							"query": [
+								{
+									"key": "auth",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Running Bus",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiKzg4MDE3MTIzNDU2NzgiLCJyb2xlIjoiT1dORVIiLCJjb21wYW55TmFtZSI6IkhhbmlmIEVudGVycHJpc2UiLCJpYXQiOjE3Mzc1MjIxOTMsImV4cCI6MTczNzYwODU5M30.5HEzblKKtej_jA8UYiRY5sqvirUeYJKzTT_KfwMnay8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"startingDate\": \"2025-01-22\",\r\n  \"startPoint\": \"Rajshahi\",\r\n  \"endPoint\": \"Dhaka\",\r\n  \"departureTimeForward\": \"3.00AM\",\r\n  \"arrivalTimeForward\": \"9.00PM\",\r\n  \"departureTimeBackward\": \"9.00PM\",\r\n  \"arrivalTimeBackward\": \"3.00AM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/bus-schedule",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"bus-schedule"
+							],
+							"query": [
+								{
+									"key": "auth",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Test Response",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://e-ticketing-server-six.vercel.app/api/v1/flight/get-flights?fromAirportCode=DAC&toAirportCode=CXB&journeyDate=2025-01-15T00:00:00.000Z&ticketType=oneWay",
+					"protocol": "https",
+					"host": [
+						"e-ticketing-server-six",
+						"vercel",
+						"app"
+					],
+					"path": [
+						"api",
+						"v1",
+						"flight",
+						"get-flights"
+					],
+					"query": [
+						{
+							"key": "fromAirportCode",
+							"value": "DAC"
+						},
+						{
+							"key": "toAirportCode",
+							"value": "CXB"
+						},
+						{
+							"key": "journeyDate",
+							"value": "2025-01-15T00:00:00.000Z"
+						},
+						{
+							"key": "ticketType",
+							"value": "oneWay"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "http://localhost:5000/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "SuperAdmin",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiMDE3MDE3MDE3MDEiLCJyb2xlIjoiU1VQRVJfQURNSU4iLCJpYXQiOjE3MzU5MTI4ODcsImV4cCI6MTczNTk5OTI4N30",
+			"type": "string"
+		},
+		{
+			"key": "Owner",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiMDE3MjM3NDkwOSIsInJvbGUiOiJBRE1JTiIsImNvbXBhbnlOYW1lIjoiSGFuaWYiLCJpYXQiOjE3MzUzODczNTQsImV4cCI6MTczNTQ3Mzc1NH0.82vTjHvyo8OqzdeLGzFpIS0C6LsDtv8WbMyzxN3Q-GU",
+			"type": "string"
+		},
+		{
+			"key": "Admin",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0TnVtYmVyIjoiMDE3MjM3NDkwOSIsInJvbGUiOiJBRE1JTiIsImNvbXBhbnlOYW1lIjoiSGFuaWYiLCJpYXQiOjE3MzUzODczNTQsImV4cCI6MTczNTQ3Mzc1NH0.82vTjHvyo8OqzdeLGzFpIS0C6LsDtv8WbMyzxN3Q-GU",
+			"type": "string"
+		}
+	]
+}

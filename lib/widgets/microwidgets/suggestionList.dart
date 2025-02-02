@@ -1,0 +1,70 @@
+import 'package:eticket_atc/controller/searchController.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+class SuggestionList extends StatelessWidget {
+  final String field;
+  SuggestionList({required this.field, super.key});
+
+  final BusSearchController busSearchController = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final suggestions = busSearchController.filteredSuggestions;
+
+      
+      if (suggestions.isEmpty) return const SizedBox.shrink();
+
+      
+      return Positioned(
+       
+        left: 0,
+        right: 0,
+        top: 50,
+        height: 300, 
+        child: SizedBox(
+          height: 200, 
+          child: ListView.builder(
+            itemCount: suggestions.length,
+            itemBuilder: (context, index) {
+              final suggestion = suggestions[index];
+              return ListTile(
+                title: Text(suggestion),
+                onTap: () {
+                  busSearchController.isSelecting.value = true;
+                  busSearchController.selectSuggestion(suggestion, field: field);
+                },
+              );
+            },
+          ),
+        ),
+      );
+    });
+  }
+}
+
+
+      // Material(
+        
+      //   elevation: 4,
+      //   color: Colors.grey[50],
+      //   child: SizedBox(
+      //     height: 200,
+      //     child: ListView.builder(
+      //       shrinkWrap: true,
+      //       itemCount: suggestions.length,
+      //       itemBuilder: (context, index) {
+      //         final suggestion = suggestions[index]
+      //         return ListTile(
+      //           title: Text(suggestion),
+      //           onTap: () {
+      //             busSearchController.isSelecting.value = true;
+      //             busSearchController.selectSuggestion(suggestion,
+      //                 field: field);
+      //           },
+      //         );
+      //       },
+      //     ),
+      //   ),
+      // );
