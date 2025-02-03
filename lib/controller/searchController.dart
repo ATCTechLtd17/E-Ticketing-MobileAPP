@@ -1,8 +1,9 @@
 import 'dart:convert';
-import 'package:eticket_atc/widgets/microwidgets/suggestionList.dart';
+import 'package:eticket_atc/controller/busFilterController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class BusSearchController extends GetxController {
   final String apiUrl =
@@ -25,6 +26,8 @@ class BusSearchController extends GetxController {
   var departureTime = Rxn<DateTime>();
   var returnTime = Rxn<DateTime>();
 
+  final BusFilterController busFilterController = Get.put(BusFilterController());
+
   var isReturn = false.obs;
   var isFrom = false.obs;
   var isTo = false.obs;
@@ -36,7 +39,7 @@ class BusSearchController extends GetxController {
     loadSuggestions();
   }
 
-  /// Fetch bus stops from API
+
   Future<void> loadSuggestions() async {
     try {
       final response = await http.get(Uri.parse(apiUrl));
@@ -134,5 +137,21 @@ class BusSearchController extends GetxController {
       isSelecting.value = false;
       clearFocus();
     });
+  }
+
+  void searchBuses(){
+    if(from.isNotEmpty && to.isNotEmpty && departureTime.value != null){
+      String formattedDate = departureTime.value != null
+          ? DateFormat('yyyy-MM-dd').format(departureTime.value!)
+          : 'N/A'; 
+
+      busFilterController.searchBuses(from.value, to.value, formattedDate);
+      print(formattedDate);
+      print(from.value);
+      print( to.value);
+
+    } else{
+      print('error in bus search');
+    }
   }
 }
