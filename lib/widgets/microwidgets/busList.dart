@@ -23,8 +23,11 @@ class BusList extends StatelessWidget {
   margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
   elevation: 3,
-  child: Padding(
-    padding: EdgeInsets.all(12),
+  child: Container(
+    padding: EdgeInsets.all(10),
+    decoration: BoxDecoration(
+      color: Colors.lightBlue[100]
+    ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -33,7 +36,7 @@ class BusList extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Colors.blueAccent,
+            color: Colors.lightBlue[700],
           ),
         ),
         SizedBox(height: 6),
@@ -47,7 +50,7 @@ class BusList extends StatelessWidget {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.green.shade100,
+                color: Colors.lightBlue[50],
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Text(

@@ -50,28 +50,40 @@ class SearchResultsPage extends StatelessWidget {
       body: Column(
         children: [
          SizedBox(height: 20,),
-          const FormFields(),
+           FormFields(),
           const SizedBox(height: 20),
           
           Center(
             child: ElevatedButton(
+              
+              style: ElevatedButton.styleFrom(
+                
+                backgroundColor: Colors.lightBlue[50],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  side: BorderSide(
+                    color: Colors.lightBlue[700]!,
+                    width: 1
+                  )
+                )
+              ),
               onPressed: () {
-                // For example, you might re-run the search.
-                // You can call the appropriate search method based on transport type.
+                
                 if (transController.selectedTransport.value == 'Bus') {
                   Get.find<BusSearchController>().searchBuses();
                 }
-                // Similarly, you would trigger the search for Air or Train
-                // or navigate back to a previous screen if that suits your UX.
+                
               },
-              child: const Text('Modify Search'),
+              child:  Text('Modify Search',
+              style: TextStyle(color: Colors.blueGrey[900]),
+              ),
             ),
           ),
           const SizedBox(height: 20),
-          // Scrollable list of available transports
+         
           Expanded(
             child: Obx(() {
-              // Based on the selected transport, show the appropriate list.
+              
               if (transController.selectedTransport.value == 'Bus') {
                 if (busFilterController.isLoading.value) {
                   return Center(child: GradientIcon(

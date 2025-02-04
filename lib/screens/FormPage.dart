@@ -70,8 +70,11 @@ class _FormsState extends State<Forms> {
             ),
           ],
         ),
-        const FormFields(),
-        const SizedBox(height: 20),
+        Obx((){
+         return transController.selectedTransport.value == 'Bus'? Column(
+          children: [
+             FormFields(),
+             const SizedBox(height: 20),
         Center(
           child: Obx(() {
             return ElevatedButton(
@@ -108,6 +111,22 @@ class _FormsState extends State<Forms> {
 
           }),
         ),
+          ],
+        ) : Container(
+          padding: EdgeInsets.all(12),
+          child: Center(
+            
+            child: Text('Something Gorgeous is coming', style: TextStyle(
+              color: Colors.lightBlue[700],
+              fontWeight: FontWeight.bold,
+              fontSize: 40
+            ),
+            textAlign: TextAlign.center,)
+            ),
+        );
+        }),
+        
+        
         const SizedBox(height: 20),
         
       ],
