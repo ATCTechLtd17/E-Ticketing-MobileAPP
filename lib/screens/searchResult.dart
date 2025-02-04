@@ -1,4 +1,5 @@
 import 'package:eticket_atc/controller/transmediaController.dart';
+import 'package:eticket_atc/widgets/graidentIcon.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:eticket_atc/controller/searchController.dart';
@@ -8,11 +9,11 @@ import 'package:eticket_atc/widgets/microwidgets/busList.dart';
 
 
 class SearchResultsPage extends StatelessWidget {
-  const SearchResultsPage({Key? key}) : super(key: key);
+  const SearchResultsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Retrieve the controllers (make sure they are properly instantiated in your app)
+    
     final TransMediaController transController =
         Get.find<TransMediaController>();
     final BusFilterController busFilterController =
@@ -23,16 +24,35 @@ class SearchResultsPage extends StatelessWidget {
     //     Get.find<TrainFilterController>();
 
     return Scaffold(
+      backgroundColor: Colors.lightBlue[50],
       appBar: AppBar(
-        title: Obx(
+        backgroundColor: Colors.lightBlue[100],
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+           Obx(
             () => Text('${transController.selectedTransport.value} Results')),
+            GradientIcon(
+            size: 70,
+            icon: Icons.all_inclusive,
+            gradientColors: [Colors.white, Colors.black],
+            shimmerColors: [
+                  Colors.lightBlue[300]!,
+                  Colors.lightBlue[500]!,
+                  Colors.purple[200]!,
+                  Colors.purpleAccent[400]!,
+                  Colors.deepPurpleAccent,
+                ],
+            ),
+        ],)
+       
       ),
       body: Column(
         children: [
-          // The search input fields along with suggestions/date pickers
+         SizedBox(height: 20,),
           const FormFields(),
           const SizedBox(height: 20),
-          // Modify Search button (you can choose to re-run the search or navigate back)
+          
           Center(
             child: ElevatedButton(
               onPressed: () {
@@ -54,7 +74,17 @@ class SearchResultsPage extends StatelessWidget {
               // Based on the selected transport, show the appropriate list.
               if (transController.selectedTransport.value == 'Bus') {
                 if (busFilterController.isLoading.value) {
-                  return const Center(child: CircularProgressIndicator());
+                  return Center(child: GradientIcon(
+                      size: 100,
+                      icon: Icons.all_inclusive,
+                      gradientColors: const [Colors.lightBlue, Colors.purpleAccent],
+                      shimmerColors: [
+                        Colors.lightBlueAccent,
+                        Colors.grey,
+                        Colors.black,
+                      ],
+                    ),
+                  );
                 } else {
                   return BusList(buses: busFilterController.filteredBuses);
                 }

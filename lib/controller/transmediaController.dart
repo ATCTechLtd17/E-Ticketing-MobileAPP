@@ -8,6 +8,7 @@ class TransMediaController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    buttonState['Bus'] = true;
     buttonState['Air'] = false;
     buttonState['Train'] = false;
     selectedTransport.value = 'Bus';

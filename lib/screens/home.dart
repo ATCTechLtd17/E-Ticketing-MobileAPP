@@ -1,4 +1,5 @@
 import 'package:eticket_atc/screens/FormPage.dart';
+import 'package:eticket_atc/widgets/graidentIcon.dart';
 import 'package:flutter/material.dart';
 
 
@@ -14,7 +15,20 @@ class Home extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Infinity'),
+            Flexible(
+              child: GradientIcon(
+                size: 70,
+                icon: Icons.all_inclusive,
+                gradientColors: [Colors.white, Colors.black],
+                shimmerColors: [
+                  Colors.lightBlue[300]!,
+                  Colors.lightBlue[500]!,
+                  Colors.purple[200]!,
+                  Colors.purpleAccent[400]!,
+                  Colors.deepPurpleAccent,
+                ],
+              ),
+            ),
             ElevatedButton(
               onPressed: (){
                 //redirect to login

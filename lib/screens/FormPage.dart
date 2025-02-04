@@ -1,9 +1,8 @@
 import 'package:eticket_atc/controller/busFilterController.dart';
 import 'package:eticket_atc/controller/searchController.dart';
 import 'package:eticket_atc/controller/transmediaController.dart';
-import 'package:eticket_atc/screens/searchResult.dart';
 import 'package:eticket_atc/widgets/formFields.dart';
-import 'package:eticket_atc/widgets/microwidgets/busList.dart';
+import 'package:eticket_atc/widgets/graidentIcon.dart';
 import 'package:eticket_atc/widgets/microwidgets/form/iconButton.dart';
 import 'package:eticket_atc/widgets/microwidgets/form/RoundTrip.dart';
 import 'package:flutter/material.dart';
@@ -76,18 +75,35 @@ class _FormsState extends State<Forms> {
         Center(
           child: Obx(() {
             return ElevatedButton(
+              
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.lightBlue[100],
+                elevation: 5,
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 5)
+              ),
               onPressed: busFilterController.isLoading.value
                   ? null
                   : () async {
-                      // Execute the search logic.
+                     
                       busSearchController.searchBuses();
-                      // Navigate to the search results page.
-                      // This will take the user to '/search-results' relative to the root ('/')
+                      
                       context.go('/search-results');
                     },
               child: busFilterController.isLoading.value
-                  ? const CircularProgressIndicator(color: Colors.white)
-                  : const Text('Search Bus'),
+                  ? GradientIcon(
+                size: 70,
+                icon: Icons.all_inclusive,
+                gradientColors: [Colors.white, Colors.black],
+                shimmerColors: [
+                        Colors.white,
+                        Colors.grey,
+                        Colors.black,
+                      ],
+              )
+                  : Text('Search Bus', 
+                  style: TextStyle(
+                    color: Colors.lightBlue[700],
+                  ),),
             );
 
           }),
