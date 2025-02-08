@@ -1,3 +1,5 @@
+import 'package:eticket_atc/models/bus_model.dart';
+import 'package:eticket_atc/screens/busDetails.dart';
 import 'package:eticket_atc/screens/home.dart';
 import 'package:eticket_atc/screens/searchResult.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +22,15 @@ final GoRouter appRouter = GoRouter(
             return const SearchResultsPage();
           },
         ),
+        GoRoute(
+          
+          path: '/bus-details',
+        builder: (context, state) {
+          final bus = state.extra as Bus;
+          return BusDetails(bus: bus,);
+        },
+        ),
+
       ],
     ),
   ],

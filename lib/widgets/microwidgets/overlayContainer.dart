@@ -4,18 +4,17 @@ class OverlayContainer extends StatefulWidget {
   final Widget child;
   final Widget overlayContent;
 
-  
   final bool showOnFocus;
 
-  
   final bool showOnTap;
 
   const OverlayContainer({
+    super.key,
     required this.child,
     required this.overlayContent,
     this.showOnFocus = true,
     this.showOnTap = true,
-    super.key});
+  });
 
   @override
   OverlayContainerState createState() => OverlayContainerState();
@@ -44,7 +43,7 @@ class OverlayContainerState extends State<OverlayContainer> {
   }
 
   void _showOverlay() {
-    
+    // Prevent duplicate overlays.
     if (_overlayEntry != null) return;
 
     final renderBox =
@@ -54,16 +53,38 @@ class OverlayContainerState extends State<OverlayContainer> {
     final size = renderBox.size;
     final offset = renderBox.localToGlobal(Offset.zero);
 
+    // Create an overlay entry that includes a full-screen barrier
+    // and the overlay content positioned below the widget.
     _overlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
-        left: offset.dx,
-        top: offset.dy + size.height,
-        width: size.width,
-        child: Material(
-          elevation: 8,
-          child: widget.overlayContent,
-        ),
-      ),
+      builder: (context) {
+        return Stack(
+          children: [
+            // Full screen transparent barrier to capture outside taps.
+            Positioned.fill(
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  _removeOverlay();
+                  _focusNode.unfocus();
+                },
+                child: Container(
+                  color: Colors.transparent,
+                ),
+              ),
+            ),
+            // The overlay content positioned relative to the child widget.
+            Positioned(
+              left: offset.dx,
+              top: offset.dy + size.height,
+              width: size.width,
+              child: Material(
+                elevation: 8,
+                child: widget.overlayContent,
+              ),
+            ),
+          ],
+        );
+      },
     );
 
     Overlay.of(context).insert(_overlayEntry!);

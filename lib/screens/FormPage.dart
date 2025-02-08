@@ -26,7 +26,7 @@ class _FormsState extends State<Forms> {
     final BusFilterController busFilterController =
         Get.put(BusFilterController());
 
-    return Column(
+    return  Column(
       children: [
         const SizedBox(height: 30),
         Row(
@@ -80,8 +80,16 @@ class _FormsState extends State<Forms> {
             return ElevatedButton(
               
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.lightBlue[100],
+                
+                
                 elevation: 5,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    width: 1,
+                    color: Colors.lightBlue[800]!,
+                  ),
+                  borderRadius: BorderRadius.circular(8)
+                ),
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 5)
               ),
               onPressed: busFilterController.isLoading.value
@@ -108,7 +116,7 @@ class _FormsState extends State<Forms> {
                     color: Colors.lightBlue[700],
                   ),),
             );
-
+    
           }),
         ),
           ],
@@ -131,5 +139,7 @@ class _FormsState extends State<Forms> {
         
       ],
     );
-  }
+
+    
+     }
 }

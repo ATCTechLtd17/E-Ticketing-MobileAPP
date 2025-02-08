@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 
 
 class FormFields extends StatelessWidget {
-  FormFields({Key? key}) : super(key: key);
+  FormFields({super.key});
 
   final BusSearchController busSearchController =
       Get.put(BusSearchController());
@@ -42,8 +42,10 @@ class FormFields extends StatelessWidget {
                             : Container();
                       }),
                       child: TextField(
+                        cursorColor: Colors.lightBlue,
                         controller: busSearchController.fromController,
                         decoration: InputDecoration(
+                          labelStyle: TextStyle(fontSize: 15),
                           labelText: 'From',
                           prefixIcon: Icon(Icons.location_on_outlined),
                           border: OutlineInputBorder(),
@@ -78,6 +80,7 @@ class FormFields extends StatelessWidget {
                             : Container();
                       }),
                       child: TextField(
+                        cursorColor: Colors.lightBlue,
                         controller: busSearchController.toController,
                         decoration: InputDecoration(
                           labelText: 'To',
