@@ -10,7 +10,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor:Colors.grey[50],
+      backgroundColor:Colors.lightBlue[50],
       appBar: AppBar(
         backgroundColor: Colors.grey[100],
         title: Row(
@@ -61,21 +61,19 @@ class Home extends StatelessWidget {
           color: Colors.lightBlue[700],
           )),
       ),
-      body: Flexible(
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-            
-              SizedBox(
-                width: double.infinity,
-                child: Image.asset('assets/images/bus_banner.jpg'),
-              ),
-              Forms(),
-           
-            ]),
-        ),
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+
+            SizedBox(
+              width: double.infinity,
+              child: Image.asset('assets/images/bus_banner.jpg'),
+            ),
+            Forms(),
+
+          ]),
       ),
     );
   }

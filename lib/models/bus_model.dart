@@ -8,7 +8,6 @@ class Bus {
   int seatCapacity;
   String coachType;
   int? seatAvailable;
-  double ticketPrice;
   String busNumber;
   bool isDeleted;
   String createdAt;
@@ -26,7 +25,6 @@ class Bus {
     required this.seatCapacity,
     required this.coachType,
     required this.seatAvailable,
-    required this.ticketPrice,
     required this.busNumber,
     required this.isDeleted,
     required this.createdAt,
@@ -46,7 +44,6 @@ class Bus {
       seatCapacity: json['seatCapacity'],
       coachType: json['coachType'],
       seatAvailable: json['seatAvailable'],
-      ticketPrice: (json['ticketPrice'] as num).toDouble(),
       busNumber: json['busNumber'],
       isDeleted: json['isDeleted'],
       createdAt: json['createdAt'],

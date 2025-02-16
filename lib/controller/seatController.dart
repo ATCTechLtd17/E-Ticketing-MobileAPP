@@ -62,11 +62,11 @@ class SeatController extends GetxController {
   Color seatColor(String state) {
     switch (state) {
       case 'booked':
-        return Colors.lightBlue[200]!;
+        return Colors.lightBlue[4300]!;
       case 'sold':
-        return Colors.grey;
+        return Colors.grey[800]!;
       default:
-        return Colors.greenAccent;
+        return Colors.lightBlue[100]!;
     }
   }
 }

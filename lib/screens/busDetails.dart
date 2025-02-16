@@ -14,17 +14,17 @@ class BusDetails extends StatelessWidget {
         backgroundColor: Colors.lightBlue[100],
         title: Text(bus.busName),
       ),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: Column(
         children: [
-          SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
+          Container(
+            padding: EdgeInsets.all(10),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
                   bus.busName,
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -38,7 +38,7 @@ class BusDetails extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Ticket Price: ৳${bus.ticketPrice}',
+                  'Ticket Price: ৳',
                   style: const TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 5),
@@ -46,19 +46,9 @@ class BusDetails extends StatelessWidget {
                   'Available Seats: ${bus.seatAvailable}',
                   style: const TextStyle(fontSize: 12),
                 ),
-                const SizedBox(height: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: bus.busRoute.map((route) {
-                    return Text(
-                      '• ${route.stoppageLocation} - ${route.stoppageTime}', 
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                    );
-                  }).toList(),
-                ),
                 const SizedBox(height: 8),
                 Text(
-                  'Departure: ${bus.busSchedule[0].departTime} on ${bus.busSchedule[0].departureDate}',
+                  'Departure: ${bus.busSchedule[0].departTime}',
                   style: const TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 8),
@@ -66,23 +56,18 @@ class BusDetails extends StatelessWidget {
                   'Arrival: ${bus.busSchedule[0].arrivalTime}',
                   style: const TextStyle(fontSize: 16),
                 ),
-                const SizedBox(height: 24),
-                Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Implement your booking logic here, e.g., navigate to a seat booking page.
-                    },
-                    child: const Text('Book Now'),
-                  ),
-                ),
+                const SizedBox(height: 16),
               ],
             ),
           ),
-        Column(
-          children: [
-            BusSeatLayout(),
-          ],
-        )
+          Flexible(
+              child: SingleChildScrollView(
+                  child: BusSeatLayout(
+            seatCapacity: bus.seatCapacity,
+          )
+          )
+          ),
+          SizedBox(height: 50,)
         ],
       ),
     );

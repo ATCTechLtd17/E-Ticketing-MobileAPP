@@ -9,6 +9,7 @@ class BusList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (buses.isEmpty) {
+      print(buses);
       return Center(
         child: Text('No Bus Found on this Date'),
       );
@@ -76,19 +77,7 @@ class BusList extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.lightBlue[50],
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Text(
-                          '৳${bus.ticketPrice}', // Ticket Price
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w600),
-                        ),
-                      ),
+                      
                     ],
                   ),
                   SizedBox(height: 4),

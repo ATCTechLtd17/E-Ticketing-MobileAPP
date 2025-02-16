@@ -10,28 +10,34 @@ class SuggestionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      final suggestions = busSearchController.filteredSuggestions;
-
-      if (suggestions.isEmpty) return const SizedBox.shrink();
-
-      return SizedBox(
-        height: 200,
-        child: ListView.builder(
-          itemCount: suggestions.length,
-          itemBuilder: (context, index) {
-            final suggestion = suggestions[index];
-            return ListTile(
-              title: Text(suggestion),
-              onTap: () {
-                busSearchController.isSelecting.value = true;
-                busSearchController.selectSuggestion(suggestion, field: field);
-              },
-            );
-          },
-        ),
-      );
-    });
+    return Container(
+      
+      decoration: BoxDecoration(
+        color: Colors.lightBlue[100]
+      ),
+      child: Obx(() {
+        final suggestions = busSearchController.filteredSuggestions;
+      
+        if (suggestions.isEmpty) return const SizedBox.shrink();
+      
+        return SizedBox(
+          height: 200,
+          child: ListView.builder(
+            itemCount: suggestions.length,
+            itemBuilder: (context, index) {
+              final suggestion = suggestions[index];
+              return ListTile(
+                title: Text(suggestion),
+                onTap: () {
+                  busSearchController.isSelecting.value = true;
+                  busSearchController.selectSuggestion(suggestion, field: field);
+                },
+              );
+            },
+          ),
+        );
+      }),
+    );
   }
 }
 
