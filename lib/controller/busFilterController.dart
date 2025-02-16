@@ -5,13 +5,13 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class BusFilterController extends GetxController{
-  final String baseUrl = 'https://e-ticketing-server.vercel.app/api/v1/bus-details';
+  final String baseUrl = 'https://e-ticketing-server.vercel.app/api/v1/bus-details/get-bus-search';
   var filteredBuses = <Bus>[].obs;
   var isLoading = false.obs;
 
   Future<void> searchBuses(String from, String to, String date) async{
     isLoading.value = true;
-    final String endUrl = '$baseUrl/get-bus-search?startPoint=$from&endPoint=$to&departureDate=$date';
+    final String endUrl = '$baseUrl?startPoint=$from&endPoint=$to&departureDate=$date';
 
     try{
       final res = await http.get(Uri.parse(endUrl));
