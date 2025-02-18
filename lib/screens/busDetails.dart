@@ -14,7 +14,6 @@ class BusDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final BusDetailsController busDetailsController = Get.put(
         BusDetailsController(bus: bus, defaultBoarding: defaultBoarding));
-
     return Scaffold(
       backgroundColor: Colors.lightBlue[50],
       appBar: AppBar(
@@ -54,7 +53,6 @@ class BusDetails extends StatelessWidget {
                     Text('Arrival: ${bus.busSchedule[0].arrivalTime}',
                         style: const TextStyle(fontSize: 16)),
                     const SizedBox(height: 12),
-                    // Ticket Price Display
                     Obx(() => Text(
                           'Ticket Price: ৳${busDetailsController.ticketPrice.value.toStringAsFixed(2)}',
                           style: TextStyle(
@@ -67,7 +65,6 @@ class BusDetails extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            // Boarding Dropdown using OverlayContainer
             Obx(() => getBoardingPointSelector(
                   bus: bus,
                   selectedValue: busDetailsController.selectedBoarding.value,
@@ -78,7 +75,6 @@ class BusDetails extends StatelessWidget {
                   },
                 )),
             const SizedBox(height: 12),
-            // Dropping Dropdown using OverlayContainer
             Obx(() => getDroppingPointSelector(
                   bus: bus,
                   selectedValue: busDetailsController.selectedDropping.value,
@@ -89,8 +85,8 @@ class BusDetails extends StatelessWidget {
                   },
                 )),
             const SizedBox(height: 16),
-            // Bus Seat Layout
-            BusSeatLayout(seatCapacity: bus.seatCapacity),
+            BusSeatLayout(seatCapacity: bus.seatCapacity,  busID: bus.id,),
+            
           ],
         ),
       ),

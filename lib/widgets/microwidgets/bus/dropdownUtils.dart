@@ -60,13 +60,12 @@ Widget getDroppingPointSelector({
 Widget _buildDropdownList({
   required List<String> options,
   required Function(String) onSelected,
-  
 }) {
   return Material(
     elevation: 8,
     color: Colors.white,
     child: Container(
-      padding: EdgeInsets.zero, 
+      padding: EdgeInsets.zero,
       constraints: const BoxConstraints(maxHeight: 200),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -79,8 +78,8 @@ Widget _buildDropdownList({
           return ListTile(
             title: Text(options[index]),
             onTap: () {
-              onSelected(options[index]); 
-              
+              onSelected(options[index]);
+              FocusScope.of(context).unfocus();
             },
           );
         },
@@ -88,3 +87,5 @@ Widget _buildDropdownList({
     ),
   );
 }
+
+

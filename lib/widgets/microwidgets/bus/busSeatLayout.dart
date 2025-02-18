@@ -4,23 +4,37 @@ import 'package:get/get.dart';
 
 class BusSeatLayout extends StatelessWidget {
   final int seatCapacity;
+  final String busID;
 
-  const BusSeatLayout({required this.seatCapacity, super.key});
+  const BusSeatLayout(
+      {required this.seatCapacity, required this.busID, super.key});
 
-  Widget buildSeatLayout(SeatController seatController) {
+  List<String> generateSeatLabels() {
+    List<String> labels = [];
+    int seatIndex = 0;
+    int totalRows = ((seatCapacity - 5) / 4).toInt() + 1;
+    for (int row = 0; row < totalRows; row++) {
+      String rowLabel = String.fromCharCode(65 + row);
+      int seatsInRow = (row == totalRows - 1) ? 5 : 4;
+      for (int pos = 0; pos < seatsInRow; pos++) {
+        if (seatIndex < seatCapacity) {
+          labels.add('$rowLabel${pos + 1}');
+          seatIndex++;
+        }
+      }
+    }
+    return labels;
+  }
+
+  Widget buildSeatLayout(
+      SeatController seatController, List<String> seatLabels) {
     List<Widget> seatRows = [];
     int seatIndex = 0;
-
-    
     int totalRows = ((seatCapacity - 5) / 4).toInt() + 1;
 
     for (int row = 0; row < totalRows; row++) {
-    
-      String rowLabel = String.fromCharCode(65 + row);
-
-     
-      int seatsInRow = (row == totalRows - 1) ? 5 : 4;
       List<Widget> rowSeats = [];
+      int seatsInRow = (row == totalRows - 1) ? 5 : 4;
 
       for (int pos = 0; pos < seatsInRow; pos++) {
         if (seatIndex < seatCapacity) {
@@ -34,17 +48,18 @@ class BusSeatLayout extends StatelessWidget {
                   height: 50,
                   margin: const EdgeInsets.all(4.0),
                   decoration: BoxDecoration(
-                    color: seatController
-                        .seatColor(seatController.seatStates[currentSeatIndex]),
+                    color: seatController.seatColor(
+                      seatController.seatStates[currentSeatIndex],
+                    ),
                     border: Border.all(color: Colors.black),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   alignment: Alignment.center,
                   child: Text(
-                    '$rowLabel${pos + 1}', 
+                    seatLabels[currentSeatIndex],
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey[700]!,
+                      color: Colors.grey[700],
                     ),
                   ),
                 ),
@@ -55,12 +70,9 @@ class BusSeatLayout extends StatelessWidget {
         }
       }
 
-     
       if (seatsInRow == 4) {
         rowSeats.insert(2, const SizedBox(width: 25));
       }
-
-      
       seatRows.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -73,8 +85,14 @@ class BusSeatLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SeatController seatController =
-        Get.put(SeatController(seatCapacity: seatCapacity));
+    final seatLabels = generateSeatLabels();
+    final SeatController seatController = Get.put(
+      SeatController(
+        seatCapacity: seatCapacity,
+        busId: busID,
+        seatLabels: seatLabels,
+      ),
+    );
 
     return Column(
       children: [
@@ -83,11 +101,11 @@ class BusSeatLayout extends StatelessWidget {
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 16),
-        buildSeatLayout(seatController),
+        buildSeatLayout(seatController, seatLabels),
         const SizedBox(height: 24),
         Obx(
           () => ElevatedButton(
-            onPressed: seatController.bookedCount > 0
+            onPressed: seatController.userBookedCount > 0
                 ? seatController.confirmBooking
                 : null,
             child: const Text('Confirm Booking'),

@@ -3,68 +3,155 @@ import 'package:get/get.dart';
 
 class SeatController extends GetxController {
   final int seatCapacity;
+  final String busId;
+  final List<String> seatLabels;
 
-  
   RxList<String> seatStates = <String>[].obs;
-  RxList<int> bookedSeats = <int>[].obs; 
+  RxList<int> localSelectedSeats = <int>[].obs;
+  String? busSeatBlockId;
 
-  SeatController({required this.seatCapacity}) {
+  SeatController({
+    required this.seatCapacity,
+    required this.busId,
+    required this.seatLabels,
+  }) {
     seatStates.value = List.filled(seatCapacity, 'available');
+    getBookedSeats();
   }
 
-  int get bookedCount => bookedSeats.length;
+  int get userBookedCount => localSelectedSeats.length;
 
-  void toggleSeat(int index) {
-    if (seatStates[index] == 'available') {
-      if (bookedCount < 4) {
+  void toggleSeat(int index) async {
+    if (seatStates[index] == 'available' && !localSelectedSeats.contains(index)) {
+      if (userBookedCount < 4) {
+        localSelectedSeats.add(index);
         seatStates[index] = 'booked';
-        bookedSeats.add(index);
+        seatStates.refresh();
+        await bookSeatInDatabase(index);
       } else {
         Get.snackbar('Error', 'You cannot book more than 4 seats at a time.');
       }
-    } else if (seatStates[index] == 'booked') {
+    } else if (seatStates[index] == 'booked' && localSelectedSeats.contains(index)) {
+      localSelectedSeats.remove(index);
       seatStates[index] = 'available';
-      bookedSeats.remove(index);
+      seatStates.refresh();
+    } else {
+      Get.snackbar('Error', 'You cannot unbook a seat that you did not select.');
     }
-    seatStates.refresh();
-    bookedSeats.refresh();
+  }
+
+  final GetConnect getConnect = GetConnect();
+
+  Future<void> bookSeatInDatabase(int seatIndex) async {
+    final String seatNum = seatLabels[seatIndex];
+    print("Attempting to book seat: $seatNum at index: $seatIndex");
+
+    if (busSeatBlockId == null) {
+      try {
+        final res = await getConnect.get(
+          'https://e-ticketing-server.vercel.app/api/v1/bus-ticket-book/get-seat-block/$busId',
+        );
+        print("GET seat block response: \${res.body}");
+
+        if (res.statusCode == 200 && res.body != null) {
+          final data = res.body['data'];
+          if (data is List && data.isNotEmpty) {
+            final block = data[0];
+            if (block is Map && block.containsKey('id')) {
+              busSeatBlockId = block['id'];
+              print("busSeatBlockId set to: $busSeatBlockId");
+            }
+          }
+        }
+      } catch (e) {
+        print("Exception while fetching seat block: $e");
+        return;
+      }
+    }
+
+    if (busSeatBlockId == null) {
+      print("Error: busSeatBlockId is null");
+      return;
+    }
+
+    try {
+      final response = await getConnect.post(
+        'https://e-ticketing-server.vercel.app/api/v1/bus-ticket-book/create-bus-ticket',
+        {
+          'id': busSeatBlockId,
+          'busId': busId,
+          'seatNumber': [seatNum],
+        },
+      );
+      print("POST booking response: ${response.body}");
+
+      if (response.statusCode == 200 && response.body != null && response.body['data'] != null) {
+        seatStates[seatIndex] = 'booked';
+        seatStates.refresh();
+        Get.snackbar("Success", "Seat $seatNum booked successfully!");
+        getBookedSeats();
+      } else {
+        print("Failed to book seat $seatNum. Response: ${response.body}");
+        seatStates[seatIndex] = 'available';
+        seatStates.refresh();
+      }
+    } catch (e) {
+      print("Exception while booking seat $seatNum: $e");
+      seatStates[seatIndex] = 'available';
+      seatStates.refresh();
+    }
+  }
+
+  Future<void> getBookedSeats() async {
+    print("Fetching booked seats for busId: $busId");
+    try {
+      final response = await getConnect.get(
+        'https://e-ticketing-server.vercel.app/api/v1/bus-ticket-book/get-seat-block/$busId',
+      );
+      print("GET seat block response: ${response.body}");
+
+      if (response.statusCode == 200 && response.body != null) {
+        final data = response.body['data'];
+        if (data is List && data.isNotEmpty) {
+          final block = data[0];
+          if (block is Map && block.containsKey('seatNumber')) {
+            final seatNumbers = block['seatNumber'];
+            if (seatNumbers is List) {
+              for (var seat in seatNumbers) {
+                if (seat is String) {
+                  int index = seatLabels.indexOf(seat);
+                  if (index != -1) {
+                    seatStates[index] = 'booked';
+                  }
+                }
+              }
+            }
+          }
+        }
+        seatStates.refresh();
+      }
+    } catch (e) {
+      print("Exception while fetching seat block: $e");
+    }
   }
 
   void confirmBooking() {
-    for (int index in bookedSeats) {
+    for (int index in localSelectedSeats) {
       seatStates[index] = 'sold';
     }
-    sendBookingToDatabase(bookedSeats);
-    bookedSeats.clear();
     seatStates.refresh();
+    localSelectedSeats.clear();
     Get.snackbar("Success", "Booking confirmed!");
-  }
-
-
-  Future<void> sendBookingToDatabase(List<int> selectedSeats) async {
-    try {
-      
-      var response = await GetConnect().post(
-        'https://your-api.com/book-seats',
-        {'seats': selectedSeats},
-      );
-
-      if (response.statusCode == 200) {
-        Get.snackbar("Success", "Seats booked successfully!");
-      } else {
-        Get.snackbar("Error", "Failed to book seats.");
-      }
-    } catch (e) {
-      Get.snackbar("Error", "Failed to connect to the server.");
-    }
   }
 
   Color seatColor(String state) {
     switch (state) {
       case 'booked':
-        return Colors.lightBlue[4300]!;
+        return Colors.lightBlue[400]!;
       case 'sold':
         return Colors.grey[800]!;
+      case 'available':
+        return Colors.lightBlue[100]!;
       default:
         return Colors.lightBlue[100]!;
     }
