@@ -21,37 +21,45 @@ class SeatController extends GetxController {
 
   int get userBookedCount => localSelectedSeats.length;
 
+  final GetConnect getConnect = GetConnect();
+
   void toggleSeat(int index) async {
-    if (seatStates[index] == 'available' && !localSelectedSeats.contains(index)) {
+    if (seatStates[index] == 'available' &&
+        !localSelectedSeats.contains(index)) {
       if (userBookedCount < 4) {
         localSelectedSeats.add(index);
         seatStates[index] = 'booked';
         seatStates.refresh();
+
         await bookSeatInDatabase(index);
       } else {
         Get.snackbar('Error', 'You cannot book more than 4 seats at a time.');
       }
-    } else if (seatStates[index] == 'booked' && localSelectedSeats.contains(index)) {
+    }
+    else if (seatStates[index] == 'booked' &&
+        localSelectedSeats.contains(index)) {
       localSelectedSeats.remove(index);
       seatStates[index] = 'available';
       seatStates.refresh();
+     
     } else {
-      Get.snackbar('Error', 'You cannot unbook a seat that you did not select.');
+      Get.snackbar(
+          'Error', 'You cannot unbook a seat that you did not select.');
     }
   }
 
-  final GetConnect getConnect = GetConnect();
-
+  /// Books a seat in the database.
   Future<void> bookSeatInDatabase(int seatIndex) async {
     final String seatNum = seatLabels[seatIndex];
     print("Attempting to book seat: $seatNum at index: $seatIndex");
 
+    // First, if busSeatBlockId is not set, fetch it from the server
     if (busSeatBlockId == null) {
       try {
         final res = await getConnect.get(
           'https://e-ticketing-server.vercel.app/api/v1/bus-ticket-book/get-seat-block/$busId',
         );
-        print("GET seat block response: \${res.body}");
+        print("GET seat block response: ${res.body}");
 
         if (res.statusCode == 200 && res.body != null) {
           final data = res.body['data'];
@@ -74,6 +82,7 @@ class SeatController extends GetxController {
       return;
     }
 
+   
     try {
       final response = await getConnect.post(
         'https://e-ticketing-server.vercel.app/api/v1/bus-ticket-book/create-bus-ticket',
@@ -85,11 +94,15 @@ class SeatController extends GetxController {
       );
       print("POST booking response: ${response.body}");
 
-      if (response.statusCode == 200 && response.body != null && response.body['data'] != null) {
+      if (response.statusCode == 200 || response.statusCode == 201 &&
+          response.body != null &&
+          response.body['data'] != null) {
         seatStates[seatIndex] = 'booked';
         seatStates.refresh();
         Get.snackbar("Success", "Seat $seatNum booked successfully!");
-        getBookedSeats();
+        Future.delayed(Duration(seconds: 1), () {
+          getBookedSeats();
+        });
       } else {
         print("Failed to book seat $seatNum. Response: ${response.body}");
         seatStates[seatIndex] = 'available';
@@ -106,7 +119,7 @@ class SeatController extends GetxController {
     print("Fetching booked seats for busId: $busId");
     try {
       final response = await getConnect.get(
-        'https://e-ticketing-server.vercel.app/api/v1/bus-ticket-book/get-seat-block/$busId',
+        'https://e-ticketing-server.vercel.app/api/v1/bus-ticket-book/get-seat-block/$busId?timestamp=${DateTime.now().millisecondsSinceEpoch}',
       );
       print("GET seat block response: ${response.body}");
 
@@ -120,7 +133,7 @@ class SeatController extends GetxController {
               for (var seat in seatNumbers) {
                 if (seat is String) {
                   int index = seatLabels.indexOf(seat);
-                  if (index != -1) {
+                  if (index != -1 && !localSelectedSeats.contains(index)) {
                     seatStates[index] = 'booked';
                   }
                 }
@@ -134,6 +147,7 @@ class SeatController extends GetxController {
       print("Exception while fetching seat block: $e");
     }
   }
+
 
   void confirmBooking() {
     for (int index in localSelectedSeats) {

@@ -42,25 +42,23 @@ class BusSeatLayout extends StatelessWidget {
           rowSeats.add(
             GestureDetector(
               onTap: () => seatController.toggleSeat(currentSeatIndex),
-              child: Obx(
-                () => Container(
-                  width: 50,
-                  height: 50,
-                  margin: const EdgeInsets.all(4.0),
-                  decoration: BoxDecoration(
-                    color: seatController.seatColor(
-                      seatController.seatStates[currentSeatIndex],
-                    ),
-                    border: Border.all(color: Colors.black),
-                    borderRadius: BorderRadius.circular(4),
+              child: Container(
+                width: 50,
+                height: 50,
+                margin: const EdgeInsets.all(4.0),
+                decoration: BoxDecoration(
+                  color: seatController.seatColor(
+                    seatController.seatStates[currentSeatIndex],
                   ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    seatLabels[currentSeatIndex],
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[700],
-                    ),
+                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  seatLabels[currentSeatIndex],
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[700],
                   ),
                 ),
               ),
@@ -74,9 +72,13 @@ class BusSeatLayout extends StatelessWidget {
         rowSeats.insert(2, const SizedBox(width: 25));
       }
       seatRows.add(
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: rowSeats,
+        Container(
+          width: 350,
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: rowSeats,
+          ),
         ),
       );
     }
@@ -93,25 +95,24 @@ class BusSeatLayout extends StatelessWidget {
         seatLabels: seatLabels,
       ),
     );
-
-    return Column(
-      children: [
-        const Text(
-          'Select Your Seat',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 16),
-        buildSeatLayout(seatController, seatLabels),
-        const SizedBox(height: 24),
-        Obx(
-          () => ElevatedButton(
+    return Obx(
+      () => Column(
+        children: [
+          const Text(
+            'Select Your Seat',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          buildSeatLayout(seatController, seatLabels),
+          const SizedBox(height: 24),
+          ElevatedButton(
             onPressed: seatController.userBookedCount > 0
                 ? seatController.confirmBooking
                 : null,
             child: const Text('Confirm Booking'),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
