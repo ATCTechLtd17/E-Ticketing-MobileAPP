@@ -1,6 +1,7 @@
 import 'package:eticket_atc/screens/FormPage.dart';
 import 'package:eticket_atc/widgets/graidentIcon.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 
 class Home extends StatelessWidget {
@@ -36,7 +37,7 @@ class Home extends StatelessWidget {
               child: ElevatedButton(
                 
                 onPressed: (){
-                  //redirect to login
+                  context.go('/register');
                 }, 
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 2, horizontal: 3),

@@ -1,6 +1,6 @@
 import 'package:eticket_atc/controller/searchController.dart';
-import 'package:eticket_atc/widgets/microwidgets/form/dtaePick.dart';
-import 'package:eticket_atc/widgets/microwidgets/form/suggestionList.dart';
+import 'package:eticket_atc/widgets/microwidgets/SearchForm/dtaePick.dart';
+import 'package:eticket_atc/widgets/microwidgets/SearchForm/suggestionList.dart';
 import 'package:eticket_atc/widgets/microwidgets/overlayContainer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -139,6 +139,46 @@ class FormFields extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             child: Row(
+  children: [
+    // Journey Date Picker
+    Flexible(
+      flex: 1,
+      child: Obx(() => DatePick(
+            label: 'Journey Date',
+            selectedDate: busSearchController.departureTime.value,
+            onDateSelected: (date) {
+              busSearchController.selectDepartureDate(date);
+            },
+            firstDate: DateTime.now(),
+            lastDate: DateTime.now().add(const Duration(days: 90)),
+          )),
+    ),
+    const SizedBox(width: 20),
+    // Return Date Picker (with opacity/ignore logic)
+    Flexible(
+      flex: 1,
+      child: Obx(() {
+        return Opacity(
+          opacity: busSearchController.isReturn.value ? 1.0 : 0.5,
+          child: IgnorePointer(
+            ignoring: !busSearchController.isReturn.value,
+            child: DatePick(
+              label: 'Return Date',
+              selectedDate: busSearchController.returnTime.value,
+              onDateSelected: (date) {
+                busSearchController.selectReturnDate(date);
+              },
+              firstDate: DateTime.now(),
+              lastDate: DateTime.now().add(const Duration(days: 90)),
+            ),
+          ),
+        );
+      }),
+    ),
+  ],
+),
+
+            /*Row(
               children: [
                 Flexible(flex: 1, child: DatePick(isJourneyDate: true)),
                 const SizedBox(width: 20),
@@ -155,7 +195,7 @@ class FormFields extends StatelessWidget {
                   }),
                 ),
               ],
-            ),
+            ),*/
           ),
           const SizedBox(height: 20),
         ],

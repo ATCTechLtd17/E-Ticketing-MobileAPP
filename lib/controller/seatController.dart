@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class SeatController extends GetxController {
   final int seatCapacity;
@@ -48,12 +49,10 @@ class SeatController extends GetxController {
     }
   }
 
-  /// Books a seat in the database.
   Future<void> bookSeatInDatabase(int seatIndex) async {
     final String seatNum = seatLabels[seatIndex];
     print("Attempting to book seat: $seatNum at index: $seatIndex");
 
-    // First, if busSeatBlockId is not set, fetch it from the server
     if (busSeatBlockId == null) {
       try {
         final res = await getConnect.get(
@@ -149,14 +148,31 @@ class SeatController extends GetxController {
   }
 
 
-  void confirmBooking() {
+  void confirmBooking(BuildContext context, Map<String, dynamic> extraData) {
+    // Capture the booked seat labels before clearing.
+    final bookedSeatLabels =
+        localSelectedSeats.map((index) => seatLabels[index]).toList();
+
+    // Mark seats as sold and refresh state.
     for (int index in localSelectedSeats) {
       seatStates[index] = 'sold';
     }
     seatStates.refresh();
     localSelectedSeats.clear();
     Get.snackbar("Success", "Booking confirmed!");
+
+    final dataToPass = {
+      "bookedSeats": bookedSeatLabels,
+      "busName": extraData["busName"],
+      "busNumber": extraData["busNumber"],
+      "ticketPrice": extraData["ticketPrice"],
+    };
+
+    Future.delayed(const Duration(milliseconds: 300), () {
+      GoRouter.of(context).go('/ticketForm', extra: dataToPass);
+    });
   }
+
 
   Color seatColor(String state) {
     switch (state) {
