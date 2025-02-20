@@ -172,7 +172,6 @@ class DatePick extends StatefulWidget {
 }
 
 class _DatePickState extends State<DatePick> {
-  final DateTime _focusedDay = DateTime.now();
 
   @override
   Widget build(BuildContext context) {

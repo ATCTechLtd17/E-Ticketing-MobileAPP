@@ -1,0 +1,2 @@
+C:/Ico/Flutter/eticket/eticket_atc/android/app/.cxx/RelWithDebInfo/4y5g2v3j/x86_64/CMakeFiles/edit_cache.dir
+C:/Ico/Flutter/eticket/eticket_atc/android/app/.cxx/RelWithDebInfo/4y5g2v3j/x86_64/CMakeFiles/rebuild_cache.dir

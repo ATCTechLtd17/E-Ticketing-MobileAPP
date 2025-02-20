@@ -5,7 +5,6 @@ class OverlayContainer extends StatefulWidget {
   final Widget overlayContent;
 
   final bool showOnFocus;
-
   final bool showOnTap;
 
   const OverlayContainer({
@@ -52,7 +51,8 @@ class OverlayContainerState extends State<OverlayContainer> {
     final size = renderBox.size;
     final offset = renderBox.localToGlobal(Offset.zero);
 
-  
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+
     _overlayEntry = OverlayEntry(
       builder: (context) {
         return Stack(
@@ -69,10 +69,14 @@ class OverlayContainerState extends State<OverlayContainer> {
                 ),
               ),
             ),
-            
             Positioned(
               left: offset.dx,
-              top: offset.dy + size.height ,
+              bottom: keyboardHeight > 0
+                  ? offset.dy +
+                      size.height 
+                  : offset.dy -
+                      size.height, 
+
               width: size.width,
               child: Material(
                 elevation: 8,
