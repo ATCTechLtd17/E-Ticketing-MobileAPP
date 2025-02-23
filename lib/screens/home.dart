@@ -29,7 +29,7 @@ class _HomeState extends State<Home> {
 
   Future<void> _logout(BuildContext context) async {
     await AuthService.logout();
-    context.go('/'); 
+    context.go('/');
   }
 
   Future<void> fetchUserProfile(String contactNumber) async {
@@ -85,7 +85,9 @@ class _HomeState extends State<Home> {
                         )
                       : CircleAvatar(
                           backgroundColor: Colors.lightBlue[500],
-                          child: Image.asset('assets/images/avatar.jpg'),
+                          child: Image.asset('assets/images/avatar.jpg',
+                          
+                          ),
                         ),
                   itemBuilder: (BuildContext context) =>
                       <PopupMenuEntry<String>>[
@@ -105,7 +107,10 @@ class _HomeState extends State<Home> {
                   onSelected: (value) {
                     switch (value) {
                       case 'profile':
-                        context.go('/profile');
+                        final contactNumber = widget.userData?["contactNumber"];
+                        if (contactNumber != null) {
+                          context.push('/profile', extra: contactNumber);
+                        }
                         break;
                       case 'dashboard':
                         context.go('/dashboard');

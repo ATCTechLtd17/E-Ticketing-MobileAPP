@@ -47,15 +47,7 @@ class LoginPage extends StatelessWidget {
           'password': loginController.passwordController.text,
         }),
       );
-      print(response.body);
-      print(response.statusCode);
-      // if(response.statusCode == 200){
-      //   final responseData = jsonDecode(response.body);
-      //   final token = responseData['accessToken'];
-      //   print(responseData);
-      //   print(token);
-      //   context.go('/');
-      // }
+     
       
        if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);

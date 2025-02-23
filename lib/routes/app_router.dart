@@ -44,7 +44,8 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: '/profile',
           builder: (context, state) {
-            return ProfilePage();
+             final contactNumber = state.extra as String;
+            return ProfilePage(contactNumber:contactNumber ,);
           },
         ),
         GoRoute(

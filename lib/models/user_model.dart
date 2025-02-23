@@ -33,20 +33,20 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json["id"],
-      fullName: json["fullName"],
-      email: json["email"],
-      contactNumber: json["contactNumber"],
-      emergencyContactNumber: json["emergencyContactNumber"],
-      dateOfBirth: json["dateOfBirth"],
-      gender: json["gender"],
-      profileImage: json["profileImage"],
-      presentAddress: json["presentAddress"],
-      permanentAddress: json["permanentAddress"],
-      nidCardNumber: json["nidCardNumber"],
-      isDeleted: json["isDeleted"],
-      createdAt: DateTime.parse(json["createdAt"]),
-      updatedAt: DateTime.parse(json["updatedAt"]),
+      id: json['id'] ?? '',
+      fullName: json['fullName'] ?? 'N/A',
+      email: json['email'] ?? 'N/A',
+      contactNumber: json['contactNumber'] ?? 'N/A',
+      emergencyContactNumber: json['emergencyContactNumber'] ?? 'N/A',
+      dateOfBirth: json['dateOfBirth'] ?? 'N/A',
+      gender: json['gender'] ?? 'N/A',
+      profileImage: json['profileImage'],
+      presentAddress: json['presentAddress'],
+      permanentAddress: json['permanentAddress'],
+      nidCardNumber: json['nidCardNumber'],
+      isDeleted: json['isDeleted'] ?? false,
+      createdAt: DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
+      updatedAt: DateTime.tryParse(json['updatedAt'] ?? '') ?? DateTime.now(),
     );
   }
 }
