@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -36,13 +38,11 @@ class SeatController extends GetxController {
       } else {
         Get.snackbar('Error', 'You cannot book more than 4 seats at a time.');
       }
-    }
-    else if (seatStates[index] == 'booked' &&
+    } else if (seatStates[index] == 'booked' &&
         localSelectedSeats.contains(index)) {
       localSelectedSeats.remove(index);
       seatStates[index] = 'available';
       seatStates.refresh();
-     
     } else {
       Get.snackbar(
           'Error', 'You cannot unbook a seat that you did not select.');
@@ -81,7 +81,6 @@ class SeatController extends GetxController {
       return;
     }
 
-   
     try {
       final response = await getConnect.post(
         'https://e-ticketing-server.vercel.app/api/v1/bus-ticket-book/create-bus-ticket',
@@ -93,9 +92,10 @@ class SeatController extends GetxController {
       );
       print("POST booking response: ${response.body}");
 
-      if (response.statusCode == 200 || response.statusCode == 201 &&
-          response.body != null &&
-          response.body['data'] != null) {
+      if (response.statusCode == 200 ||
+          response.statusCode == 201 &&
+              response.body != null &&
+              response.body['data'] != null) {
         seatStates[seatIndex] = 'booked';
         seatStates.refresh();
         Get.snackbar("Success", "Seat $seatNum booked successfully!");
@@ -147,13 +147,10 @@ class SeatController extends GetxController {
     }
   }
 
-
   void confirmBooking(BuildContext context, Map<String, dynamic> extraData) {
-    // Capture the booked seat labels before clearing.
     final bookedSeatLabels =
         localSelectedSeats.map((index) => seatLabels[index]).toList();
 
-    // Mark seats as sold and refresh state.
     for (int index in localSelectedSeats) {
       seatStates[index] = 'sold';
     }
@@ -166,6 +163,10 @@ class SeatController extends GetxController {
       "busName": extraData["busName"],
       "busNumber": extraData["busNumber"],
       "ticketPrice": extraData["ticketPrice"],
+      "passengerName": extraData["passengerName"] ?? "",
+      "phone": extraData["phone"] ?? "",
+      "totalPrice": extraData["totalPrice"] ??
+          (bookedSeatLabels.length * extraData["ticketPrice"])
     };
 
     Future.delayed(const Duration(milliseconds: 300), () {
@@ -173,13 +174,12 @@ class SeatController extends GetxController {
     });
   }
 
-
   Color seatColor(String state) {
     switch (state) {
       case 'booked':
         return Colors.lightBlue[400]!;
       case 'sold':
-        return Colors.grey[800]!;
+        return Colors.grey[200]!;
       case 'available':
         return Colors.lightBlue[100]!;
       default:

@@ -44,7 +44,7 @@ Future<void> registerUser(BuildContext context) async {
       final url =
           Uri.parse('https://e-ticketing-server.vercel.app/api/v1/auth/signup');
 
-      // Build the payload
+      
       final payload = jsonEncode({
         'fullName': registerController.nameController.text.trim(),
         'email': registerController.emailController.text.trim(),
@@ -54,12 +54,8 @@ Future<void> registerUser(BuildContext context) async {
         'dateOfBirth': registerController.birthdate.value!.toIso8601String(),
         'gender': registerController.selectedGender.value.toUpperCase(),
         'password': registerController.passwordController.text.trim(),
-        'profileImage': '',
-        'presentAddress': '',
-        'permanentAddress': '',
-        'nidCardNumber': '',
-        'isDeleted': false,
       });
+      
 
       
       print("Request Payload: $payload");

@@ -1,8 +1,7 @@
-import 'package:eticket_atc/widgets/ticketDetails.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class TicketFormPage extends StatefulWidget {
-  // Expect extra data from the previous page.
   final List<String> bookedSeats;
   final String busName;
   final String busNumber;
@@ -21,6 +20,8 @@ class TicketFormPage extends StatefulWidget {
 }
 
 class _TicketFormPageState extends State<TicketFormPage> {
+  String ticketFor = "myself"; // Default selection: "For Myself"
+
   final _formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -28,7 +29,6 @@ class _TicketFormPageState extends State<TicketFormPage> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      // Build ticket data using the entered form data and passed extras.
       final ticketData = {
         "passengerName": nameController.text,
         "phone": phoneController.text,
@@ -40,14 +40,50 @@ class _TicketFormPageState extends State<TicketFormPage> {
         "totalPrice": widget.ticketPrice * widget.bookedSeats.length,
       };
 
-      // Navigate to TicketDetailsPage.
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => TicketDetailsPage(ticketData: ticketData),
-        ),
-      );
+      context.push('/ticketDetails', extra: ticketData);
     }
+  }
+
+  void _navigateToLogin() {
+    final ticketData = {
+      "busName": widget.busName,
+      "busNumber": widget.busNumber,
+      "bookedSeats": widget.bookedSeats,
+      "ticketPrice": widget.ticketPrice,
+      "totalPrice": widget.ticketPrice * widget.bookedSeats.length,
+    };
+
+    
+    context.push('/login', extra: ticketData);
+  }
+
+  Widget _buildRadioButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Radio<String>(
+          value: "myself",
+          groupValue: ticketFor,
+          onChanged: (value) {
+            setState(() {
+              ticketFor = value!;
+            });
+          },
+        ),
+        const Text("For Myself"),
+        const SizedBox(width: 20),
+        Radio<String>(
+          value: "someoneElse",
+          groupValue: ticketFor,
+          onChanged: (value) {
+            setState(() {
+              ticketFor = value!;
+            });
+          },
+        ),
+        const Text("For Someone Else"),
+      ],
+    );
   }
 
   @override
@@ -61,50 +97,62 @@ class _TicketFormPageState extends State<TicketFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Enter Your Details")),
-      body: Padding(
+      appBar: AppBar(title: const Text("Ticket Details")),
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              // Name Field
-              TextFormField(
-                controller: nameController,
-                decoration: const InputDecoration(labelText: "Name"),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Name is required";
-                  }
-                  return null;
-                },
-              ),
-              // Phone Number Field
-              TextFormField(
-                controller: phoneController,
-                decoration: const InputDecoration(labelText: "Phone Number"),
-                keyboardType: TextInputType.phone,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Phone number is required";
-                  }
-                  return null;
-                },
-              ),
-              // Email Field (optional)
-              TextFormField(
-                controller: emailController,
-                decoration:
-                    const InputDecoration(labelText: "Email (optional)"),
-                keyboardType: TextInputType.emailAddress,
-              ),
-              const SizedBox(height: 20),
+        child: Column(
+          children: [
+            _buildRadioButtons(),
+            const SizedBox(height: 20),
+            if (ticketFor == "myself")
               ElevatedButton(
-                onPressed: _submitForm,
-                child: const Text("Submit"),
+                onPressed: _navigateToLogin,
+                child: const Text("Login"),
+              )
+            else
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: nameController,
+                      decoration: const InputDecoration(labelText: "Name"),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Name is required";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: phoneController,
+                      decoration:
+                          const InputDecoration(labelText: "Phone Number"),
+                      keyboardType: TextInputType.phone,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Phone number is required";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: emailController,
+                      decoration:
+                          const InputDecoration(labelText: "Email (optional)"),
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: _submitForm,
+                      child: const Text("Submit"),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
+          ],
         ),
       ),
     );

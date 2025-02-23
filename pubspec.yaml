@@ -10,10 +10,12 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_animate: ^4.5.2
+  flutter_secure_storage: ^9.2.4
   get: ^4.6.6
   go_router: ^14.7.2
   http: ^1.3.0
   intl: ^0.20.2
+  jwt_decoder: ^2.0.1
   open_file: ^3.5.10
   overlay_manager: ^0.0.3
   path_provider: ^2.1.5
@@ -31,3 +33,4 @@ flutter:
   - assets/images/bus_banner.jpg
   - assets/images/register.jpg
   - assets/images/regi.png
+  - assets/images/avatar.jpg
