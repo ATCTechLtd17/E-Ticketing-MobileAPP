@@ -1,6 +1,6 @@
+import 'package:eticket_atc/widgets/customTab.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 import 'package:eticket_atc/controller/profileController.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -37,13 +37,12 @@ print(profileController.user);
               children: [
                 _buildProfileHeader(user),
                 const SizedBox(height: 24),
-                _buildTabBar(context),
+               _buildStats(profileController),
+               const SizedBox(height: 32),
+               CustomTabBar(),
                 const SizedBox(height: 16),
-                _buildStats(profileController),
-                const SizedBox(height: 24),
-                _buildSectionHeader("Overview"),
-                _buildUserInfo(user),
-                const SizedBox(height: 32),
+                
+                
                 const Center(
                   child: Text(
                     "Developed by ATC Tech Ltd.",
@@ -96,35 +95,7 @@ print(profileController.user);
     );
   }
 
-  Widget _buildTabBar(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: [
-          _buildTabButton(context, "Profile", isSelected: true),
-          _buildTabButton(context, "Insights"),
-          _buildTabButton(context, "Tickets"),
-          _buildTabButton(context, "Total Buy"),
-          _buildTabButton(context, "Cancel Request"),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTabButton(BuildContext context, String label,
-      {bool isSelected = false}) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          foregroundColor: isSelected ? Colors.white : Colors.black,
-          backgroundColor: isSelected ? Colors.blue : Colors.grey.shade300,
-        ),
-        onPressed: () {},
-        child: Text(label),
-      ),
-    );
-  }
+  
 
   Widget _buildStats(ProfileController profileController) {
     return Row(

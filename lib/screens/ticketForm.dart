@@ -1,4 +1,7 @@
+import 'package:eticket_atc/controller/ticketDetailsController.dart';
+import 'package:eticket_atc/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class TicketFormPage extends StatefulWidget {
@@ -20,14 +23,15 @@ class TicketFormPage extends StatefulWidget {
 }
 
 class _TicketFormPageState extends State<TicketFormPage> {
-  String ticketFor = "myself"; // Default selection: "For Myself"
+  String ticketFor = "myself"; 
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final token =  AuthService.getToken();
 
-  void _submitForm() {
+  /*void _submitForm() {
     if (_formKey.currentState!.validate()) {
       final ticketData = {
         "passengerName": nameController.text,
@@ -43,6 +47,35 @@ class _TicketFormPageState extends State<TicketFormPage> {
       context.push('/ticketDetails', extra: ticketData);
     }
   }
+*/
+void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      final ticketData = {
+        "passengerName": nameController.text,
+        "phone": phoneController.text,
+        "email": emailController.text,
+        "busName": widget.busName,
+        "busNumber": widget.busNumber,
+        "seatNumbers": widget.bookedSeats,
+        "ticketPrice": widget.ticketPrice,
+        "totalPrice": widget.ticketPrice * widget.bookedSeats.length,
+        
+        "issueDate": DateTime.now().toString(),
+        "journeyDate": DateTime.now().add(const Duration(days: 1)).toString(),
+        "departureTime": "10:00 AM",
+        "fromCity": "YourCity", 
+        "toCity": "DestinationCity",
+        "boardingPoint": "Main Stop", 
+      };
+
+     
+      final ticketController = Get.put(TicketDetailsController());
+      ticketController.ticketData.value = ticketData;
+
+      
+      context.push('/ticketDetails');
+    }
+  }
 
   void _navigateToLogin() {
     final ticketData = {
@@ -53,8 +86,8 @@ class _TicketFormPageState extends State<TicketFormPage> {
       "totalPrice": widget.ticketPrice * widget.bookedSeats.length,
     };
 
-    
-    context.push('/login', extra: ticketData);
+    context.push('/ticketDetails', extra: ticketData);
+      
   }
 
   Widget _buildRadioButtons() {
@@ -107,7 +140,7 @@ class _TicketFormPageState extends State<TicketFormPage> {
             if (ticketFor == "myself")
               ElevatedButton(
                 onPressed: _navigateToLogin,
-                child: const Text("Login"),
+                child: const Text("Proceed"),
               )
             else
               Form(
@@ -147,7 +180,7 @@ class _TicketFormPageState extends State<TicketFormPage> {
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: _submitForm,
-                      child: const Text("Submit"),
+                      child: const Text("Proceed"),
                     ),
                   ],
                 ),
