@@ -1,14 +1,14 @@
-import 'dart:convert';
+
+import 'package:eticket_atc/controller/authController.dart';
 import 'package:eticket_atc/controller/loginController.dart';
-import 'package:eticket_atc/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
 
 class LoginPage extends StatelessWidget {
   final Map<String, dynamic>? redirectData;
   final LoginController loginController = Get.put(LoginController());
+  final AuthController authController = Get.find<AuthController>();
 
   LoginPage({super.key, this.redirectData});
 
@@ -26,44 +26,28 @@ class LoginPage extends StatelessWidget {
   }
 
   void _toLogin(BuildContext context) {
-    final loginData = {
-      'contactNumber': loginController.contactNumberController.text.trim(),
-    };
-    print(loginData);
-    context.push('/', extra: loginData);
+    context.go('/');
   }
 
   Future<void> loginUser(BuildContext context) async {
     try {
       loginController.isLoading.value = true;
-      final url =
-          Uri.parse('https://e-ticketing-server.vercel.app/api/v1/auth/login');
-
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'contactNumber': loginController.contactNumberController.text.trim(),
-          'password': loginController.passwordController.text,
-        }),
-      );
-     
       
-       if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
-        final token = responseData['data']?['accessToken'];
-        
-        await AuthService.saveToken(token);
-        print(token);
-        print(responseData);
-
+      // Use the AuthController for login
+      final success = await authController.login(
+        loginController.contactNumberController.text.trim(),
+        loginController.passwordController.text,
+      );
+      
+      if (success) {
         Get.snackbar(
           "Success",
           "Login successful!",
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
-        print(redirectData);
+        
+        // Check if we need to redirect to a specific page after login
         if (redirectData != null) {
           Future.delayed(const Duration(milliseconds: 300), () {
             context.go('/ticketDetails', extra: redirectData);
@@ -74,7 +58,7 @@ class LoginPage extends StatelessWidget {
       } else {
         Get.snackbar(
           "Error",
-          "Login failed! ${response.body}",
+          "Login failed! Please check your credentials.",
           backgroundColor: Colors.red,
           colorText: Colors.white,
         );
@@ -162,7 +146,7 @@ class LoginPage extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () => context.go('/register'),
-                child: const Text('Don’t have an account? Sign up'),
+                child: const Text("Don't have an account? Sign up"),
               ),
             ],
           ),

@@ -1,10 +1,15 @@
+import 'package:eticket_atc/controller/authController.dart';
+import 'package:eticket_atc/controller/profileController.dart';
 import 'package:eticket_atc/routes/app_router.dart';
 import 'package:eticket_atc/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   bool isLoggedIn = await AuthService.isTokenValid();
+  Get.put(AuthController());
+   Get.put(ProfileController());
   runApp(MyApp(isLoggedIn: isLoggedIn));
 
 }

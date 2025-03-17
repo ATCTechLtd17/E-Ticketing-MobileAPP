@@ -1,3 +1,4 @@
+import 'package:eticket_atc/controller/authController.dart';
 import 'package:eticket_atc/widgets/customTab.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,24 +8,83 @@ class ProfilePage extends StatelessWidget {
   final String contactNumber;
 
   ProfilePage({super.key, required this.contactNumber}) {
-    print(contactNumber);
-    final ProfileController profileController = Get.put(ProfileController());
-    profileController.fetchUserData(contactNumber);
+    // Get existing controllers
+    final authController = Get.find<AuthController>();
+    final profileController = Get.find<ProfileController>();
+
+    // Check authentication status before fetching profile data
+    if (!authController.isAuthenticated.value) {
+      // Redirect to login if not authenticated
+      Get.offAllNamed('/login');
+      return;
+    }
+
+    // Only fetch user data if it's not already loaded or if contact number changed
+    if (profileController.user.value == null ||
+        profileController.user.value?.contactNumber != contactNumber) {
+      // Pass the auth token when fetching user data
+      profileController.fetchUserData(contactNumber);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final ProfileController profileController = Get.put(ProfileController());
-print(profileController.user);
+    // Get existing controller references
+    final authController = Get.find<AuthController>();
+    final profileController = Get.find<ProfileController>();
+
     return Scaffold(
       backgroundColor: Colors.lightBlue[50],
       appBar: AppBar(
         title: const Text("Profile"),
         backgroundColor: Colors.lightBlue[100],
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              // Use AuthController to handle logout
+              await authController.logout();
+              Get.offAllNamed('/login');
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: Obx(() {
-          if (profileController.user.value == null) {
+          // First check authentication status
+          if (!authController.isAuthenticated.value) {
+            // Redirect to login if not authenticated
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Get.offAllNamed('/login');
+            });
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          // Show error message if there's an error
+          if (profileController.errorMessage.value.isNotEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Error: ${profileController.errorMessage.value}",
+                    style: const TextStyle(color: Colors.red),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () =>
+                        profileController.fetchUserData(contactNumber),
+                    child: const Text("Retry"),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          // Show loading indicator while data is being fetched
+          if (profileController.isLoading.value ||
+              profileController.user.value == null) {
             return const Center(child: CircularProgressIndicator());
           }
 
@@ -35,14 +95,18 @@ print(profileController.user);
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildProfileHeader(user),
+                _buildProfileHeader(user, profileController, authController),
                 const SizedBox(height: 24),
-               _buildStats(profileController),
-               const SizedBox(height: 32),
-               CustomTabBar(),
+                _buildStats(profileController),
+                const SizedBox(height: 32),
+                 CustomTabBar(),
                 const SizedBox(height: 16),
-                
-                
+                _buildSectionHeader("User Information"),
+                _buildUserInfo(user),
+                const SizedBox(height: 24),
+                _buildSectionHeader("Account Management"),
+                _buildAccountOptions(authController),
+                const SizedBox(height: 24),
                 const Center(
                   child: Text(
                     "Developed by ATC Tech Ltd.",
@@ -57,7 +121,8 @@ print(profileController.user);
     );
   }
 
-  Widget _buildProfileHeader(user) {
+  Widget _buildProfileHeader(user, ProfileController profileController,
+      AuthController authController) {
     return Row(
       children: [
         CircleAvatar(
@@ -71,6 +136,9 @@ print(profileController.user);
                     fit: BoxFit.cover,
                     width: 60,
                     height: 60,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Icon(Icons.person, size: 40);
+                    },
                   ),
                 ),
         ),
@@ -84,8 +152,18 @@ print(profileController.user);
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
+              Text(
+                user.contactNumber,
+                style: const TextStyle(color: Colors.grey),
+              ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  // Use AuthController's token to pass to edit profile page
+                  Get.toNamed('/edit-profile', arguments: {
+                    'user': user,
+                    'token': authController.token.value
+                  });
+                },
                 child: const Text("Edit Profile"),
               ),
             ],
@@ -95,18 +173,32 @@ print(profileController.user);
     );
   }
 
-  
-
   Widget _buildStats(ProfileController profileController) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        _buildInfoBox(
-            "Purchase", profileController.purchaseCount.value.toString()),
-        _buildInfoBox("All Ticket", "All Ticket"),
-        _buildInfoBox(
-            "Cancel", profileController.canceledCount.value.toString()),
-      ],
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: const Offset(0, 1),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildInfoBox(
+              "Purchase", profileController.purchaseCount.value.toString()),
+          _buildInfoBox(
+              "All Tickets", profileController.purchaseCount.value.toString()),
+          _buildInfoBox(
+              "Canceled", profileController.canceledCount.value.toString()),
+        ],
+      ),
     );
   }
 
@@ -134,25 +226,83 @@ print(profileController.user);
     );
   }
 
-
-
   Widget _buildUserInfo(user) {
-    return Column(
-      children: [
-        _buildUserInfoRow("Full Name", user.fullName),
-        _buildUserInfoRow("Contact Number", user.contactNumber),
-        _buildUserInfoRow(
-            "Emergency Contact Number", user.emergencyContactNumber),
-        _buildUserInfoRow("Email", user.email),
-        _buildUserInfoRow("Date of Birth", user.dateOfBirth),
-        _buildUserInfoRow("Gender", user.gender),
-        if (user.nidCardNumber != null)
-          _buildUserInfoRow("NID Card Number", user.nidCardNumber!),
-        if (user.presentAddress != null)
-          _buildUserInfoRow("Present Address", user.presentAddress!),
-        if (user.permanentAddress != null)
-          _buildUserInfoRow("Permanent Address", user.permanentAddress!),
-      ],
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: const Offset(0, 1),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          _buildUserInfoRow("Full Name", user.fullName),
+          _buildUserInfoRow("Contact Number", user.contactNumber),
+          if (user.emergencyContactNumber != null &&
+              user.emergencyContactNumber.isNotEmpty)
+            _buildUserInfoRow("Emergency Contact", user.emergencyContactNumber),
+          if (user.email != null && user.email.isNotEmpty)
+            _buildUserInfoRow("Email", user.email),
+          if (user.dateOfBirth != null && user.dateOfBirth.isNotEmpty)
+            _buildUserInfoRow("Date of Birth", user.dateOfBirth),
+          if (user.gender != null && user.gender.isNotEmpty)
+            _buildUserInfoRow("Gender", user.gender),
+          if (user.nidCardNumber != null && user.nidCardNumber.isNotEmpty)
+            _buildUserInfoRow("NID Card Number", user.nidCardNumber),
+          if (user.presentAddress != null && user.presentAddress.isNotEmpty)
+            _buildUserInfoRow("Present Address", user.presentAddress),
+          if (user.permanentAddress != null && user.permanentAddress.isNotEmpty)
+            _buildUserInfoRow("Permanent Address", user.permanentAddress),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAccountOptions(AuthController authController) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: const Offset(0, 1),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          ListTile(
+            leading: const Icon(Icons.lock, color: Colors.blue),
+            title: const Text("Change Password"),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () {
+              // Navigate to change password screen with auth token
+              Get.toNamed('/change-password',
+                  arguments: {'token': authController.token.value});
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.logout, color: Colors.red),
+            title: const Text("Logout"),
+            onTap: () async {
+              await authController.logout();
+              Get.offAllNamed('/login');
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -160,15 +310,24 @@ print(profileController.user);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 180,
+            width: 140,
             child: Text(
               "$label:",
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
             ),
           ),
-          Expanded(child: Text(value)),
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(color: Colors.black87),
+            ),
+          ),
         ],
       ),
     );

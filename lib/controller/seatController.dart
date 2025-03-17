@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:eticket_atc/controller/ticketDetailsController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -147,6 +148,7 @@ class SeatController extends GetxController {
     }
   }
 
+  // In seatController.dart - Modify confirmBooking method
   void confirmBooking(BuildContext context, Map<String, dynamic> extraData) {
     final bookedSeatLabels =
         localSelectedSeats.map((index) => seatLabels[index]).toList();
@@ -158,19 +160,26 @@ class SeatController extends GetxController {
     localSelectedSeats.clear();
     Get.snackbar("Success", "Booking confirmed!");
 
-    final dataToPass = {
-      "bookedSeats": bookedSeatLabels,
+    // Calculate total price
+    final totalPrice = bookedSeatLabels.length * extraData["ticketPrice"];
+
+    // Get the ticket controller and update data directly
+    final ticketController = Get.find<TicketDetailsController>();
+    if (!Get.isRegistered<TicketDetailsController>()) {
+      Get.put(TicketDetailsController());
+    }
+
+    ticketController.updateTicketFields({
+      "seatNumbers": bookedSeatLabels,
       "busName": extraData["busName"],
       "busNumber": extraData["busNumber"],
       "ticketPrice": extraData["ticketPrice"],
-      "passengerName": extraData["passengerName"] ?? "",
-      "phone": extraData["phone"] ?? "",
-      "totalPrice": extraData["totalPrice"] ??
-          (bookedSeatLabels.length * extraData["ticketPrice"])
-    };
+      "totalPrice": totalPrice
+    });
 
+    // Navigate without passing data
     Future.delayed(const Duration(milliseconds: 300), () {
-      GoRouter.of(context).go('/ticketForm', extra: dataToPass);
+      GoRouter.of(context).go('/ticketForm');
     });
   }
 
