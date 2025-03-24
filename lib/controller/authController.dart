@@ -94,22 +94,17 @@ class AuthController extends GetxController {
         },
       );
 
-      // In your AuthController, in the fetchUserProfile method:
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
 
-        // Update user data with profile information
         if (userData.value != null && data['data'] != null) {
-          // Convert the dynamic map to a String, dynamic map before merging
           final Map<String, dynamic> profileData =
               Map<String, dynamic>.from(data['data']);
 
-          // Now merge the properly typed maps
           final updatedUserData = {...userData.value!, ...profileData};
           userData.value = updatedUserData;
 
-          // Save updated user data
           await AuthService.saveUserData(updatedUserData);
         }
       }

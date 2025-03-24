@@ -98,11 +98,7 @@ class ProfilePage extends StatelessWidget {
                 _buildProfileHeader(user, profileController, authController),
                 const SizedBox(height: 24),
                 _buildStats(profileController),
-                const SizedBox(height: 32),
                  CustomTabBar(),
-                const SizedBox(height: 16),
-                _buildSectionHeader("User Information"),
-                _buildUserInfo(user),
                 const SizedBox(height: 24),
                 _buildSectionHeader("Account Management"),
                 _buildAccountOptions(authController),
@@ -181,7 +177,7 @@ class ProfilePage extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
+            color: Colors.grey[200]!,
             spreadRadius: 1,
             blurRadius: 3,
             offset: const Offset(0, 1),
@@ -226,44 +222,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildUserInfo(user) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 1,
-            blurRadius: 3,
-            offset: const Offset(0, 1),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          _buildUserInfoRow("Full Name", user.fullName),
-          _buildUserInfoRow("Contact Number", user.contactNumber),
-          if (user.emergencyContactNumber != null &&
-              user.emergencyContactNumber.isNotEmpty)
-            _buildUserInfoRow("Emergency Contact", user.emergencyContactNumber),
-          if (user.email != null && user.email.isNotEmpty)
-            _buildUserInfoRow("Email", user.email),
-          if (user.dateOfBirth != null && user.dateOfBirth.isNotEmpty)
-            _buildUserInfoRow("Date of Birth", user.dateOfBirth),
-          if (user.gender != null && user.gender.isNotEmpty)
-            _buildUserInfoRow("Gender", user.gender),
-          if (user.nidCardNumber != null && user.nidCardNumber.isNotEmpty)
-            _buildUserInfoRow("NID Card Number", user.nidCardNumber),
-          if (user.presentAddress != null && user.presentAddress.isNotEmpty)
-            _buildUserInfoRow("Present Address", user.presentAddress),
-          if (user.permanentAddress != null && user.permanentAddress.isNotEmpty)
-            _buildUserInfoRow("Permanent Address", user.permanentAddress),
-        ],
-      ),
-    );
-  }
+  
 
   Widget _buildAccountOptions(AuthController authController) {
     return Container(
@@ -273,7 +232,7 @@ class ProfilePage extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
+            color: Colors.grey[200]!,
             spreadRadius: 1,
             blurRadius: 3,
             offset: const Offset(0, 1),
@@ -306,30 +265,4 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildUserInfoRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 140,
-            child: Text(
-              "$label:",
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              style: const TextStyle(color: Colors.black87),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

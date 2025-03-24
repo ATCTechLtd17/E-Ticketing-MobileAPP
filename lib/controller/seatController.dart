@@ -148,7 +148,6 @@ class SeatController extends GetxController {
     }
   }
 
-  // In seatController.dart - Modify confirmBooking method
   void confirmBooking(BuildContext context, Map<String, dynamic> extraData) {
     final bookedSeatLabels =
         localSelectedSeats.map((index) => seatLabels[index]).toList();
@@ -160,10 +159,8 @@ class SeatController extends GetxController {
     localSelectedSeats.clear();
     Get.snackbar("Success", "Booking confirmed!");
 
-    // Calculate total price
     final totalPrice = bookedSeatLabels.length * extraData["ticketPrice"];
 
-    // Get the ticket controller and update data directly
     final ticketController = Get.find<TicketDetailsController>();
     if (!Get.isRegistered<TicketDetailsController>()) {
       Get.put(TicketDetailsController());

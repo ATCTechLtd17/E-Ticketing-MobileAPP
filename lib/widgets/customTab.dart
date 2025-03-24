@@ -14,7 +14,7 @@ class CustomTabBar extends StatelessWidget {
   final List<Map<String, dynamic>> _tabs = [
     {"label": "Profile", "widget": ProfileTab()},
     {"label": "Insights", "widget": InsightTab()},
-    {"label": "Tickets", "widget": TicketTab()},
+    // {"label": "Tickets", "widget": TicketTab()},
     {"label": "Total Buy", "widget": TotalBuyTab()},
     {"label": "Cancel Request", "widget": CancelTicketTab()},
   ];

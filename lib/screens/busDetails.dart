@@ -94,11 +94,10 @@ class BusDetails extends StatelessWidget {
                   },
                 )),
             const SizedBox(height: 16),
-            // Pass extra data to BusSeatLayout here
             BusSeatLayout(
               seatCapacity: bus.seatCapacity,
               busID: bus.id,
-              extraData: extraData, // Pass dynamic data
+              extraData: extraData, 
             ),
           ],
         ),

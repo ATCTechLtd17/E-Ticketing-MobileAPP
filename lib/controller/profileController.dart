@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class ProfileController extends GetxController {
-  // Reference to the AuthController to avoid duplication
   final _authController = Get.find<AuthController>();
 
   var user = Rxn<UserModel>();
@@ -21,12 +20,10 @@ class ProfileController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Load user data when controller initializes
     loadUserProfile();
   }
 
   Future<void> loadUserProfile() async {
-    // Use the userData from AuthController
     final userData = _authController.userData.value;
     if (userData != null && userData.containsKey('contactNumber')) {
       fetchUserData(userData['contactNumber']);
@@ -59,12 +56,10 @@ class ProfileController extends GetxController {
         final userData = jsonBody['data'];
 
         if (userData != null) {
-          // Convert dynamic map to String, dynamic map to prevent type errors
           final Map<String, dynamic> typedUserData =
               Map<String, dynamic>.from(userData);
           user.value = UserModel.fromJson(typedUserData);
 
-          // Fetch purchase history statistics
           await fetchPurchaseStatistics(contactNumber);
         } else {
           errorMessage.value = 'No user data found in the response';
@@ -136,11 +131,9 @@ class ProfileController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        // Refresh user data after successful update
         if (user.value?.contactNumber != null) {
           await fetchUserData(user.value!.contactNumber);
 
-          // Also update the userData in AuthController to keep it in sync
           if (_authController.userData.value != null) {
             final Map<String, dynamic> updatedUserData = {
               ..._authController.userData.value!,
@@ -180,7 +173,6 @@ class ProfileController extends GetxController {
         return false;
       }
 
-      // If there's an image file, first upload it and get the URL
       if (imageFile != null) {
         final imageUrl = await uploadProfileImage(imageFile);
         if (imageUrl != null) {
@@ -188,7 +180,6 @@ class ProfileController extends GetxController {
         }
       }
 
-      // Now update the profile with all data including new image URL if uploaded
       return await updateProfile(updatedData);
     } catch (e) {
       errorMessage.value = 'Error updating profile: $e';
@@ -202,7 +193,6 @@ class ProfileController extends GetxController {
     if (!_authController.isAuthenticated.value) return null;
 
     try {
-      // Create a multipart request for uploading the image
       final uploadUrl = Uri.parse(
         'https://e-ticketing-server.vercel.app/api/v1/upload/profile-image',
       );
@@ -269,6 +259,45 @@ class ProfileController extends GetxController {
       return false;
     } finally {
       isUpdating.value = false;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> fetchUserTickets(
+      String contactNumber) async {
+    if (!_authController.isAuthenticated.value) return [];
+
+    isLoading.value = true;
+    errorMessage.value = '';
+
+    try {
+      final url = Uri.parse(
+        'https://e-ticketing-server.vercel.app/api/v1/booking/passenger-bookings/$contactNumber',
+      );
+
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization': _authController.token.value,
+          'Content-Type': 'application/json'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final jsonBody = jsonDecode(response.body);
+        final List<dynamic> tickets = jsonBody['data'] ?? [];
+
+        return tickets
+            .map((ticket) => Map<String, dynamic>.from(ticket))
+            .toList();
+      } else {
+        errorMessage.value = 'Failed to fetch tickets: ${response.statusCode}';
+        return [];
+      }
+    } catch (e) {
+      errorMessage.value = 'Error fetching tickets: $e';
+      return [];
+    } finally {
+      isLoading.value = false;
     }
   }
 

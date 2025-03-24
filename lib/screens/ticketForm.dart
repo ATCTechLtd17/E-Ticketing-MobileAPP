@@ -18,27 +18,25 @@ class _TicketFormPageState extends State<TicketFormPage> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
 
-  // Get the AuthController instance
+  
   final AuthController authController = Get.find<AuthController>();
-  // Initialize TicketDetailsController
+  
   late TicketDetailsController ticketController;
 
   @override
   void initState() {
     super.initState();
 
-    // Initialize TicketDetailsController
+   
     if (!Get.isRegistered<TicketDetailsController>()) {
       ticketController = Get.put(TicketDetailsController());
     } else {
       ticketController = Get.find<TicketDetailsController>();
     }
 
-    // Add listener to the authentication status
-    // This will automatically navigate to ticket details when auth state changes
+
     ever(authController.isAuthenticated, (isAuthenticated) {
       if (isAuthenticated && ticketFor == "myself") {
-        // Small delay to ensure everything is loaded properly
         Future.delayed(Duration(milliseconds: 100), () {
           context.push('/ticketDetails');
         });
@@ -47,31 +45,29 @@ class _TicketFormPageState extends State<TicketFormPage> {
   }
 
   void _handleMyself() {
-    // Check if user is authenticated
     if (!authController.isAuthenticated.value) {
-      // Navigate to login page if not authenticated
       context.push('/login');
       return;
     }
 
-    // If already authenticated, proceed to ticket details page
+   
     context.push('/ticketDetails');
   }
 
-  // Modified _submitForm method
+ 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      // Create ticket data
+     
       final ticketData = {
         "passengerName": nameController.text,
         "phone": phoneController.text,
         "email": emailController.text,
       };
 
-      // Update data directly using the initialized controller
+     
       ticketController.updateTicketFields(ticketData);
 
-      // Navigate to next page without passing data
+      
       context.push('/ticketDetails');
     }
   }
