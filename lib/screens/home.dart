@@ -1,5 +1,3 @@
-// Create a new file: lib/screens/home_content.dart
-
 import 'package:eticket_atc/controller/authController.dart';
 import 'package:eticket_atc/screens/FormPage.dart';
 import 'package:flutter/material.dart';
@@ -33,18 +31,25 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: double.infinity,
-            child: Image.asset('assets/images/bus_banner.jpg'),
-          ),
-          Forms(),
-        ],
+    return Scaffold(
+      backgroundColor: Colors.lightBlue[50],
+      body: SingleChildScrollView(
+        // This property ensures the screen scrolls when keyboard opens
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: Image.asset('assets/images/bus_banner.jpg'),
+            ),
+            const Forms(),
+          ],
+        ),
       ),
+      // Add this to allow keyboard to push the content up
+      resizeToAvoidBottomInset: true,
     );
   }
 }

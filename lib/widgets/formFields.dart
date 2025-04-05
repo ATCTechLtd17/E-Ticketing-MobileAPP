@@ -47,10 +47,12 @@ class FormFields extends StatelessWidget {
                             cursorColor: Colors.lightBlue,
                             controller: busSearchController.fromController,
                             decoration: InputDecoration(
-                              labelStyle: TextStyle(fontSize: 15),
+                              labelStyle: TextStyle(fontSize: 12),
                               labelText: 'From',
                               prefixIcon: Icon(Icons.location_on_outlined),
-                              border: OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)
+                              ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.lightBlue),
                               ),
@@ -82,9 +84,13 @@ class FormFields extends StatelessWidget {
                             cursorColor: Colors.lightBlue,
                             controller: busSearchController.toController,
                             decoration: InputDecoration(
+
+                              labelStyle: TextStyle(fontSize: 12),
                               labelText: 'To',
                               prefixIcon: Icon(Icons.location_on_outlined),
-                              border: OutlineInputBorder(),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)
+                              ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.lightBlue),
                               ),
@@ -135,7 +141,7 @@ class FormFields extends StatelessWidget {
               )
 
               ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           Container(
             padding: const EdgeInsets.all(10),
             child: Row(
@@ -178,26 +184,8 @@ class FormFields extends StatelessWidget {
   ],
 ),
 
-            /*Row(
-              children: [
-                Flexible(flex: 1, child: DatePick(isJourneyDate: true)),
-                const SizedBox(width: 20),
-                Flexible(
-                  flex: 1,
-                  child: Obx(() {
-                    return Opacity(
-                      opacity: busSearchController.isReturn.value ? 1.0 : 0.5,
-                      child: IgnorePointer(
-                        ignoring: !busSearchController.isReturn.value,
-                        child: DatePick(isJourneyDate: false),
-                      ),
-                    );
-                  }),
-                ),
-              ],
-            ),*/
+          
           ),
-          const SizedBox(height: 20),
         ],
       ),
     );

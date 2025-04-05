@@ -131,6 +131,7 @@ class _AppScaffoldState extends State<AppScaffold> {
       ),
       body: widget.child, // This displays the current page content
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.grey[100],
         currentIndex: currentIndex,
         onTap: (index) => _onItemTapped(index, context),
         selectedItemColor: Colors.lightBlue[500],

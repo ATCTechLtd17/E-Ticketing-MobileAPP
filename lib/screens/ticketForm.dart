@@ -18,56 +18,41 @@ class _TicketFormPageState extends State<TicketFormPage> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
 
-  
   final AuthController authController = Get.find<AuthController>();
-  
   late TicketDetailsController ticketController;
 
   @override
   void initState() {
     super.initState();
 
-   
     if (!Get.isRegistered<TicketDetailsController>()) {
       ticketController = Get.put(TicketDetailsController());
     } else {
       ticketController = Get.find<TicketDetailsController>();
     }
-
-
-    ever(authController.isAuthenticated, (isAuthenticated) {
-      if (isAuthenticated && ticketFor == "myself") {
-        Future.delayed(Duration(milliseconds: 100), () {
-          context.push('/ticketDetails');
-        });
-      }
-    });
   }
 
   void _handleMyself() {
     if (!authController.isAuthenticated.value) {
-      context.push('/login');
+      // Pass current page data for redirect after login
+      final redirectData = {"returnTo": "/ticketDetails"};
+      context.push('/login', extra: redirectData);
       return;
     }
 
-   
+    // If already authenticated, go directly to ticket details
     context.push('/ticketDetails');
   }
 
- 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-     
       final ticketData = {
         "passengerName": nameController.text,
         "phone": phoneController.text,
         "email": emailController.text,
       };
 
-     
       ticketController.updateTicketFields(ticketData);
-
-      
       context.push('/ticketDetails');
     }
   }
@@ -84,6 +69,7 @@ class _TicketFormPageState extends State<TicketFormPage> {
               ticketFor = value!;
             });
           },
+          activeColor: Colors.lightBlue[700],
         ),
         const Text("For Myself"),
         const SizedBox(width: 20),
@@ -95,6 +81,7 @@ class _TicketFormPageState extends State<TicketFormPage> {
               ticketFor = value!;
             });
           },
+          activeColor: Colors.lightBlue[700],
         ),
         const Text("For Someone Else"),
       ],
@@ -112,7 +99,12 @@ class _TicketFormPageState extends State<TicketFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Ticket Details")),
+      backgroundColor: Colors.lightBlue[50],
+      appBar: AppBar(
+        title: const Text("Ticket Details"),
+        backgroundColor: Colors.lightBlue[600],
+        foregroundColor: Colors.white,
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -122,52 +114,101 @@ class _TicketFormPageState extends State<TicketFormPage> {
             if (ticketFor == "myself")
               Obx(() => ElevatedButton(
                     onPressed: _handleMyself,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.lightBlue[400],
+                      foregroundColor: Colors.grey[100],
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
                     child: Text(authController.isAuthenticated.value
                         ? "Proceed"
                         : "Login"),
                   ))
             else
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: const Text("Proceed"),
-              ),
-            if (ticketFor == "someoneElse")
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      controller: nameController,
-                      decoration: const InputDecoration(labelText: "Name"),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Name is required";
-                        }
-                        return null;
-                      },
+              Column(
+                children: [
+                  const SizedBox(height: 10),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: nameController,
+                          decoration: InputDecoration(
+                            labelText: "Name",
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide:
+                                  const BorderSide(color: Colors.lightBlue),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Name is required";
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: phoneController,
+                          decoration: InputDecoration(
+                            labelText: "Phone Number",
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide:
+                                  const BorderSide(color: Colors.lightBlue),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          keyboardType: TextInputType.phone,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Phone number is required";
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: emailController,
+                          decoration: InputDecoration(
+                            labelText: "Email (optional)",
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide:
+                                  const BorderSide(color: Colors.lightBlue),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                        const SizedBox(height: 24),
+                        ElevatedButton(
+                          onPressed: _submitForm,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.lightBlue,
+                            foregroundColor: Colors.white,
+                            minimumSize: const Size(double.infinity, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Text("Proceed"),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: phoneController,
-                      decoration:
-                          const InputDecoration(labelText: "Phone Number"),
-                      keyboardType: TextInputType.phone,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Phone number is required";
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      controller: emailController,
-                      decoration:
-                          const InputDecoration(labelText: "Email (optional)"),
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
           ],
         ),

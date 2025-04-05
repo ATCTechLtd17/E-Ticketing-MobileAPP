@@ -1,4 +1,3 @@
-
 import 'package:eticket_atc/controller/authController.dart';
 import 'package:eticket_atc/controller/loginController.dart';
 import 'package:flutter/material.dart';
@@ -25,20 +24,16 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  void _toLogin(BuildContext context) {
-    context.go('/');
-  }
-
   Future<void> loginUser(BuildContext context) async {
     try {
       loginController.isLoading.value = true;
-      
+
       // Use the AuthController for login
       final success = await authController.login(
         loginController.contactNumberController.text.trim(),
         loginController.passwordController.text,
       );
-      
+
       if (success) {
         Get.snackbar(
           "Success",
@@ -46,14 +41,15 @@ class LoginPage extends StatelessWidget {
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
-        
+
         // Check if we need to redirect to a specific page after login
         if (redirectData != null) {
           Future.delayed(const Duration(milliseconds: 300), () {
             context.go('/ticketDetails', extra: redirectData);
           });
         } else {
-          _toLogin(context);
+          // Only navigate to home if there's no redirection needed
+          context.go('/');
         }
       } else {
         Get.snackbar(
@@ -121,6 +117,7 @@ class LoginPage extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
+                      backgroundColor: Colors.lightBlue,
                     ),
                     child: loginController.isLoading.value
                         ? const SizedBox(
@@ -131,7 +128,8 @@ class LoginPage extends StatelessWidget {
                               strokeWidth: 2,
                             ),
                           )
-                        : const Text('Login'),
+                        : const Text('Login',
+                            style: TextStyle(color: Colors.white)),
                   )),
               TextButton(
                 onPressed: () {
@@ -142,11 +140,13 @@ class LoginPage extends StatelessWidget {
                     colorText: Colors.white,
                   );
                 },
-                child: const Text('Forgot Password?'),
+                child: const Text('Forgot Password?',
+                    style: TextStyle(color: Colors.lightBlue)),
               ),
               TextButton(
                 onPressed: () => context.go('/register'),
-                child: const Text("Don't have an account? Sign up"),
+                child: const Text("Don't have an account? Sign up",
+                    style: TextStyle(color: Colors.lightBlue)),
               ),
             ],
           ),

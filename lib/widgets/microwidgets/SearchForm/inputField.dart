@@ -8,7 +8,7 @@ Widget inputField(IconData icon, String label, String value, {bool readOnly = fa
       prefixIcon: Icon(icon),
       labelText: label,
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8)
+        borderRadius: BorderRadius.circular(10)
       ),
     ),
   );
