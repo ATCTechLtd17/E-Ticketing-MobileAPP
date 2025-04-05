@@ -7,7 +7,6 @@ import 'package:eticket_atc/widgets/microwidgets/profile/profileTab.dart';
 import 'package:eticket_atc/widgets/microwidgets/profile/ticketTab.dart';
 import 'package:eticket_atc/widgets/microwidgets/profile/totalbuyTab.dart';
 
-
 class CustomTabBar extends StatelessWidget {
   CustomTabBar({super.key});
 
@@ -15,8 +14,8 @@ class CustomTabBar extends StatelessWidget {
     {"label": "Profile", "widget": ProfileTab()},
     {"label": "Insights", "widget": InsightTab()},
     // {"label": "Tickets", "widget": TicketTab()},
-    {"label": "Total Buy", "widget": TotalBuyTab()},
-    {"label": "Cancel Request", "widget": CancelTicketTab()},
+    // {"label": "Total Buy", "widget": TotalBuyTab()},
+    // {"label": "Cancel Request", "widget": CancelTicketTab()},
   ];
 
   @override
@@ -27,11 +26,9 @@ class CustomTabBar extends StatelessWidget {
     return Column(
       children: [
         _buildTabBar(tabController),
+        // Replace IndexedStack with an Obx-wrapped widget that only shows the current tab
         Obx(
-          () => IndexedStack(
-            index: tabController.selectedIndex.value,
-            children: _tabs.map((tab) => tab["widget"] as Widget).toList(),
-          ),
+          () => _tabs[tabController.selectedIndex.value]["widget"] as Widget,
         ),
       ],
     );
@@ -42,7 +39,6 @@ class CustomTabBar extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: List.generate(_tabs.length, (index) {
-      
           return Obx(() {
             bool isSelected = tabController.selectedIndex.value == index;
             return Padding(

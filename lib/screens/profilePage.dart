@@ -241,17 +241,17 @@ class ProfilePage extends StatelessWidget {
       ),
       child: Column(
         children: [
-          ListTile(
-            leading: const Icon(Icons.lock, color: Colors.blue),
-            title: const Text("Change Password"),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {
-              // Navigate to change password screen with auth token
-              Get.toNamed('/change-password',
-                  arguments: {'token': authController.token.value});
-            },
-          ),
-          const Divider(),
+          // ListTile(
+          //   leading: const Icon(Icons.lock, color: Colors.blue),
+          //   title: const Text("Change Password"),
+          //   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+          //   onTap: () {
+          //     // Navigate to change password screen with auth token
+          //     Get.toNamed('/change-password',
+          //         arguments: {'token': authController.token.value});
+          //   },
+          // ),
+          // const Divider(),
           ListTile(
             leading: const Icon(Icons.logout, color: Colors.red),
             title: const Text("Logout"),
