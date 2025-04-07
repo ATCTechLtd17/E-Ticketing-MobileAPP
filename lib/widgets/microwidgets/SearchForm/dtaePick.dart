@@ -7,6 +7,7 @@ class DatePick extends StatefulWidget {
   final Function(DateTime?) onDateSelected;
   final DateTime firstDate;
   final DateTime lastDate;
+  final bool autoConfirm; // New parameter to control auto-confirmation behavior
 
   const DatePick({
     required this.label,
@@ -14,6 +15,7 @@ class DatePick extends StatefulWidget {
     required this.onDateSelected,
     required this.firstDate,
     required this.lastDate,
+    this.autoConfirm = false, // Default is false, requiring manual confirmation
     super.key,
   });
 
@@ -67,9 +69,8 @@ class _DatePickState extends State<DatePick> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    // Instead of showDatePicker, we'll use a custom dialog with calendar
-    // that can auto-confirm selection
     DateTime initialDate = widget.selectedDate ?? DateTime.now();
+    DateTime? selectedDate = initialDate;
 
     showDialog(
       context: context,
@@ -82,7 +83,7 @@ class _DatePickState extends State<DatePick> {
               onPrimary: Colors.grey[200]!,
               surface: Colors.grey[200]!,
               onSurface: Colors.black,
-            ), 
+            ),
             dialogTheme: DialogThemeData(backgroundColor: Colors.grey[300]),
           ),
           child: Dialog(
@@ -99,11 +100,44 @@ class _DatePickState extends State<DatePick> {
                     firstDate: widget.firstDate,
                     lastDate: widget.lastDate,
                     onDateChanged: (DateTime date) {
-                      // Auto-confirm when date is selected
-                      widget.onDateSelected(date);
-                      Navigator.pop(context); // Close dialog automatically
+                      // Update the selected date
+                      selectedDate = date;
+
+                      // If autoConfirm is true, close immediately
+                      if (widget.autoConfirm) {
+                        widget.onDateSelected(date);
+                        Navigator.pop(context);
+                      }
                     },
                   ),
+
+                  // Only show confirm/cancel buttons if not auto-confirming
+                  if (!widget.autoConfirm)
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Cancel'),
+                          ),
+                          const SizedBox(width: 8),
+                          ElevatedButton(
+                            onPressed: () {
+                              widget.onDateSelected(selectedDate);
+                              Navigator.pop(context);
+                            },
+                            child: const Text('OK'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.lightBlue,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                 ],
               ),
             ),

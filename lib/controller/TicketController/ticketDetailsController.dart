@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:eticket_atc/controller/authController.dart';
-import 'package:eticket_atc/controller/busDetailsController.dart';
-import 'package:eticket_atc/controller/profileController.dart';
-import 'package:eticket_atc/controller/seatController.dart';
+import 'package:eticket_atc/controller/AuthController/authController.dart';
+import 'package:eticket_atc/controller/BusController/busDetailsController.dart';
+import 'package:eticket_atc/controller/ProfileController/profileController.dart';
+import 'package:eticket_atc/controller/BusController/seatController.dart';
 import 'package:eticket_atc/models/passenger_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -12,7 +12,7 @@ class TicketDetailsController extends GetxController {
   var ticketData = <String, dynamic>{}.obs;
   var isLoading = true.obs;
   var errorMessage = ''.obs;
-  var isBooking = false.obs;
+  var isBooking = false.obs; 
   var bookingSuccess = false.obs;
   var bookingError = ''.obs;
   var bookedTicketInfo = Rxn<PassengerInfo>();
@@ -72,6 +72,9 @@ class TicketDetailsController extends GetxController {
 
     // Ensure we have data for all fields
     ensureRequiredFields();
+
+    // Calculate total price after all data is loaded
+    updateTotalPrice();
   }
 
   // Ensures all required fields have at least an empty string
@@ -154,20 +157,14 @@ class TicketDetailsController extends GetxController {
                 Map<String, dynamic>.from(ticketData);
 
             // Set passenger info with priority from profile
-            // Fix: Use correct field names from UserModel
             updatedData["passengerName"] = userModel.fullName;
             updatedData["phone"] = userModel.contactNumber;
             updatedData["email"] = userModel.email;
             updatedData["gender"] = userModel.gender;
 
             // Add any additional fields from the profile that might be useful
-            // Fix: Use correct field names from UserModel
             updatedData["address"] = userModel.presentAddress ?? "";
-
-            // Fix: UserModel doesn't have age, using dateOfBirth instead
             updatedData["dateOfBirth"] = userModel.dateOfBirth;
-
-            // Fix: UserModel has nidCardNumber, not nationalId
             updatedData["nationalId"] = userModel.nidCardNumber ?? "";
 
             // Update the ticket data
@@ -218,53 +215,72 @@ class TicketDetailsController extends GetxController {
     try {
       // Check if BusDetailsController is registered
       if (!Get.isRegistered<BusDetailsController>()) {
-        print('BusDetailsController not registered');
+        print(
+            'BusDetailsController not registered, attempting to retrieve default values from bus...');
+
+        // If we have bus data from previous initialization, try to use that
+        if (ticketData.containsKey("busId")) {
+          // Logic to handle fallback if necessary
+          print('Using existing bus data with ID: ${ticketData["busId"]}');
+        }
         return;
       }
 
-      final BusDetailsController busController =
+      final BusDetailsController busDetailsController =
           Get.find<BusDetailsController>();
 
-      print(
-          'Bus controller data: boarding=${busController.selectedBoarding.value}, '
-          'dropping=${busController.selectedDropping.value}, '
-          'price=${busController.ticketPrice.value}');
+      // Force the controller to update ticket price if needed
+      if (forceFetch) {
+        busDetailsController.updateTicketPrice();
+      }
+
+      // Make sure boarding and dropping points are not empty
+      // If they are, use the default values from bus schedule
+      String boardingPoint = busDetailsController.selectedBoarding.value;
+      String droppingPoint = busDetailsController.selectedDropping.value;
+
+      // If boarding point is empty, use the start point from the first schedule
+      if (boardingPoint.isEmpty) {
+        boardingPoint = busDetailsController.bus.busSchedule[0].startPoint;
+        // Update the controller's value
+        busDetailsController.setSelectedBoarding(boardingPoint);
+        print('Setting default boarding point to: $boardingPoint');
+      }
+
+      // If dropping point is empty, use the end point from the first schedule
+      if (droppingPoint.isEmpty) {
+        droppingPoint = busDetailsController.bus.busSchedule[0].endPoint;
+        // Update the controller's value
+        busDetailsController.setSelectedDropping(droppingPoint);
+        print('Setting default dropping point to: $droppingPoint');
+      }
+
+      print('Bus controller data: boarding=$boardingPoint, '
+          'dropping=$droppingPoint, '
+          'price=${busDetailsController.ticketPrice.value}');
 
       final Map<String, dynamic> updatedData =
           Map<String, dynamic>.from(ticketData);
 
-      // Fix: Force the ticket price to be updated
-      if (forceFetch) {
-        busController.updateTicketPrice();
-      }
-
-      // Always update these fields to ensure they're set
-      updatedData["fromCity"] = busController.selectedBoarding.value;
-      updatedData["boardingPoint"] = busController.selectedBoarding.value;
-      updatedData["toCity"] = busController.selectedDropping.value;
-      updatedData["droppingPoint"] = busController.selectedDropping.value;
-      updatedData["originalPrice"] = busController.ticketPrice.value.toString();
+      // Set all location fields consistently
+      updatedData["fromCity"] = boardingPoint;
+      updatedData["boardingPoint"] = boardingPoint;
+      updatedData["toCity"] = droppingPoint;
+      updatedData["droppingPoint"] = droppingPoint;
+      updatedData["originalPrice"] =
+          busDetailsController.ticketPrice.value.toString();
 
       // Bus details
-      updatedData["busName"] = busController.bus.busName;
-      updatedData["busType"] = busController.bus.busType;
-      updatedData["coachType"] = busController.bus.coachType;
-      updatedData["busId"] = busController.bus.id;
+      updatedData["busName"] = busDetailsController.bus.busName;
+      updatedData["busType"] = busDetailsController.bus.busType;
+      updatedData["coachType"] = busDetailsController.bus.coachType;
+      updatedData["busId"] = busDetailsController.bus.id;
 
-      if (busController.bus.busSchedule.isNotEmpty) {
+      if (busDetailsController.bus.busSchedule.isNotEmpty) {
         updatedData["departureTime"] =
-            busController.bus.busSchedule[0].departTime;
+            busDetailsController.bus.busSchedule[0].departTime;
         updatedData["arrivalTime"] =
-            busController.bus.busSchedule[0].arrivalTime;
-      }
-
-      // Add totalPrice based on seat count and ticket price
-      if (updatedData.containsKey("seatNumbers") &&
-          updatedData["seatNumbers"] is List &&
-          busController.ticketPrice.value > 0) {
-        final int seatCount = (updatedData["seatNumbers"] as List).length;
-        updatedData["totalPrice"] =
-            (seatCount * busController.ticketPrice.value).toString();
+            busDetailsController.bus.busSchedule[0].arrivalTime;
       }
 
       // Debug the values
@@ -276,11 +292,41 @@ class TicketDetailsController extends GetxController {
       print('originalPrice: ${updatedData["originalPrice"]}');
 
       ticketData(updatedData);
+
+      // Update total price after setting originalPrice
+      updateTotalPrice();
     } catch (e) {
       print('Error loading bus details: $e');
+
+      // Add fallback mechanism - try to set defaults from other sources
+      final Map<String, dynamic> updatedData =
+          Map<String, dynamic>.from(ticketData);
+
+      // If we have bus data but not the boarding/dropping points, try to extract from elsewhere
+      if (updatedData.containsKey("busId") &&
+          (!updatedData.containsKey("boardingPoint") ||
+              updatedData["boardingPoint"].toString().isEmpty)) {
+        print('Attempting to recover missing boarding/dropping points...');
+
+        // Check various ways the data might exist in the ticket data
+        if (updatedData.containsKey("fromCity") &&
+            updatedData["fromCity"].toString().isNotEmpty) {
+          updatedData["boardingPoint"] = updatedData["fromCity"];
+          print(
+              'Recovered boarding point from fromCity: ${updatedData["fromCity"]}');
+        }
+
+        if (updatedData.containsKey("toCity") &&
+            updatedData["toCity"].toString().isNotEmpty) {
+          updatedData["droppingPoint"] = updatedData["toCity"];
+          print(
+              'Recovered dropping point from toCity: ${updatedData["toCity"]}');
+        }
+
+        ticketData(updatedData);
+      }
     }
   }
-
   // Load seat details with improved error handling
   Future<void> loadSeatDetails() async {
     try {
@@ -306,22 +352,48 @@ class TicketDetailsController extends GetxController {
             Map<String, dynamic>.from(ticketData);
         updatedData["seatNumbers"] = selectedSeatLabels;
 
-        // Update total price based on seat count and ticket price
-        if (updatedData.containsKey("originalPrice") &&
-            updatedData["originalPrice"].toString().isNotEmpty) {
-          final double price =
-              double.tryParse(updatedData["originalPrice"].toString()) ?? 0.0;
-          if (price > 0) {
-            updatedData["totalPrice"] =
-                (selectedSeatLabels.length * price).toString();
-          }
-        }
-
         ticketData(updatedData);
+
+        // Update total price after seat numbers change
+        updateTotalPrice();
       }
     } catch (e) {
       print('Error loading seat details: $e');
     }
+  }
+
+  // New centralized method to update total price
+  void updateTotalPrice() {
+    final Map<String, dynamic> updatedData =
+        Map<String, dynamic>.from(ticketData);
+
+    // Get seat count
+    int seatCount = 0;
+    if (updatedData.containsKey("seatNumbers") &&
+        updatedData["seatNumbers"] is List) {
+      seatCount = (updatedData["seatNumbers"] as List).length;
+    }
+
+    // Get price per seat
+    double pricePerSeat = 0.0;
+    if (updatedData.containsKey("originalPrice") &&
+        updatedData["originalPrice"] != null &&
+        updatedData["originalPrice"].toString().isNotEmpty) {
+      pricePerSeat =
+          double.tryParse(updatedData["originalPrice"].toString()) ?? 0.0;
+    }
+
+    // Calculate total price
+    if (seatCount > 0 && pricePerSeat > 0) {
+      updatedData["totalPrice"] = (seatCount * pricePerSeat).toString();
+      print(
+          'Updated total price: ${updatedData["totalPrice"]} ($seatCount seats × $pricePerSeat)');
+    } else {
+      print(
+          'Cannot calculate total price: seatCount=$seatCount, pricePerSeat=$pricePerSeat');
+    }
+
+    ticketData(updatedData);
   }
 
   void addDefaultDateInfo() {
@@ -388,33 +460,45 @@ class TicketDetailsController extends GetxController {
         updatedData["passengerName"] = data["passengerName"];
       }
 
-      // Fix: Check for boarding/dropping points and price
+      // Fix: Ensure location fields are consistent
       if (data.containsKey("boardingPoint") && data["boardingPoint"] != null) {
+        updatedData["boardingPoint"] = data["boardingPoint"];
         updatedData["fromCity"] = data["boardingPoint"];
       }
 
       if (data.containsKey("droppingPoint") && data["droppingPoint"] != null) {
+        updatedData["droppingPoint"] = data["droppingPoint"];
         updatedData["toCity"] = data["droppingPoint"];
+      }
+
+      // Also handle if fromCity/toCity are provided but not boarding/dropping
+      if (data.containsKey("fromCity") && data["fromCity"] != null) {
+        updatedData["fromCity"] = data["fromCity"];
+        if (!updatedData.containsKey("boardingPoint") ||
+            updatedData["boardingPoint"] == null ||
+            updatedData["boardingPoint"].toString().isEmpty) {
+          updatedData["boardingPoint"] = data["fromCity"];
+        }
+      }
+
+      if (data.containsKey("toCity") && data["toCity"] != null) {
+        updatedData["toCity"] = data["toCity"];
+        if (!updatedData.containsKey("droppingPoint") ||
+            updatedData["droppingPoint"] == null ||
+            updatedData["droppingPoint"].toString().isEmpty) {
+          updatedData["droppingPoint"] = data["toCity"];
+        }
       }
 
       if (data.containsKey("ticketPrice") && data["ticketPrice"] != null) {
         updatedData["originalPrice"] = data["ticketPrice"].toString();
-
-        // Update total price if we have seat data
-        if (updatedData.containsKey("seatNumbers") &&
-            updatedData["seatNumbers"] is List &&
-            (updatedData["seatNumbers"] as List).isNotEmpty) {
-          final int seatCount = (updatedData["seatNumbers"] as List).length;
-          final double price =
-              double.tryParse(data["ticketPrice"].toString()) ?? 0.0;
-          if (price > 0) {
-            updatedData["totalPrice"] = (seatCount * price).toString();
-          }
-        }
       }
 
       ticketData(updatedData);
       print('Initialized ticket data: $updatedData');
+
+      // Update total price after initialization
+      updateTotalPrice();
     }
   }
 
@@ -423,7 +507,7 @@ class TicketDetailsController extends GetxController {
         Map<String, dynamic>.from(ticketData);
     updatedData[key] = value;
 
-    // Fix: Update related fields
+    // Fix: Update related fields to keep everything consistent
     if (key == "boardingPoint") {
       updatedData["fromCity"] = value;
     } else if (key == "droppingPoint") {
@@ -432,28 +516,30 @@ class TicketDetailsController extends GetxController {
       updatedData["boardingPoint"] = value;
     } else if (key == "toCity") {
       updatedData["droppingPoint"] = value;
-    } else if (key == "ticketPrice") {
+    } else if (key == "ticketPrice" || key == "originalPrice") {
       updatedData["originalPrice"] = value.toString();
-
-      // Update total price if we have seat data
-      if (updatedData.containsKey("seatNumbers") &&
-          updatedData["seatNumbers"] is List &&
-          (updatedData["seatNumbers"] as List).isNotEmpty) {
-        final int seatCount = (updatedData["seatNumbers"] as List).length;
-        final double price = double.tryParse(value.toString()) ?? 0.0;
-        if (price > 0) {
-          updatedData["totalPrice"] = (seatCount * price).toString();
-        }
-      }
+    } else if (key == "seatNumbers") {
+      // Update total price if seat numbers change
+      updatedData[key] = value;
+      ticketData(updatedData);
+      updateTotalPrice();
+      return;
     }
 
     ticketData(updatedData);
+
+    // Update total price whenever relevant fields change
+    if (key == "ticketPrice" || key == "originalPrice") {
+      updateTotalPrice();
+    }
+
     print('Updated ticket field $key: $value');
   }
 
   void updateTicketFields(Map<String, dynamic> fields) {
     final Map<String, dynamic> updatedData =
         Map<String, dynamic>.from(ticketData);
+    bool needsPriceUpdate = false;
 
     fields.forEach((key, value) {
       updatedData[key] = value;
@@ -467,53 +553,68 @@ class TicketDetailsController extends GetxController {
         updatedData["boardingPoint"] = value;
       } else if (key == "toCity") {
         updatedData["droppingPoint"] = value;
-      } else if (key == "ticketPrice") {
+      } else if (key == "ticketPrice" || key == "originalPrice") {
         updatedData["originalPrice"] = value.toString();
+        needsPriceUpdate = true;
+      } else if (key == "seatNumbers") {
+        needsPriceUpdate = true;
       }
     });
 
-    // Update total price if ticketPrice is provided and we have seat data
-    if ((fields.containsKey("ticketPrice") ||
-            fields.containsKey("originalPrice")) &&
-        updatedData.containsKey("seatNumbers") &&
-        updatedData["seatNumbers"] is List) {
-      final int seatCount = (updatedData["seatNumbers"] as List).length;
-      final double price = double.tryParse(fields.containsKey("ticketPrice")
-              ? fields["ticketPrice"].toString()
-              : fields["originalPrice"].toString()) ??
-          0.0;
+    ticketData(updatedData);
 
-      if (price > 0 && seatCount > 0) {
-        updatedData["totalPrice"] = (seatCount * price).toString();
-      }
+    // Update total price when needed
+    if (needsPriceUpdate) {
+      updateTotalPrice();
     }
 
-    ticketData(updatedData);
     print('Updated ticket fields: $fields');
   }
 
-  // Add this method to fix the error in ticketTab.dart
   void setTicketData(Map<String, dynamic> data) {
     isLoading.value = true;
     // Reset the current ticket data and replace with new data
     ticketData.value = Map<String, dynamic>.from(data);
 
-    // Fix: Ensure from/to and boarding/dropping are consistent
-    if (data.containsKey("fromCity") && !data.containsKey("boardingPoint")) {
-      ticketData["boardingPoint"] = data["fromCity"];
-    } else if (data.containsKey("boardingPoint") &&
-        !data.containsKey("fromCity")) {
-      ticketData["fromCity"] = data["boardingPoint"];
+    // Fix: Ensure location fields are consistent
+    Map<String, dynamic> updatedData =
+        Map<String, dynamic>.from(ticketData);
+
+    if (updatedData.containsKey("fromCity") &&
+        updatedData["fromCity"] != null &&
+        updatedData["fromCity"].toString().isNotEmpty) {
+      if (!updatedData.containsKey("boardingPoint") ||
+          updatedData["boardingPoint"] == null ||
+          updatedData["boardingPoint"].toString().isEmpty) {
+        updatedData["boardingPoint"] = updatedData["fromCity"];
+      }
+    } else if (updatedData.containsKey("boardingPoint") &&
+        updatedData["boardingPoint"] != null &&
+        updatedData["boardingPoint"].toString().isNotEmpty) {
+      updatedData["fromCity"] = updatedData["boardingPoint"];
     }
 
-    if (data.containsKey("toCity") && !data.containsKey("droppingPoint")) {
-      ticketData["droppingPoint"] = data["toCity"];
-    } else if (data.containsKey("droppingPoint") &&
-        !data.containsKey("toCity")) {
-      ticketData["toCity"] = data["droppingPoint"];
+    if (updatedData.containsKey("toCity") &&
+        updatedData["toCity"] != null &&
+        updatedData["toCity"].toString().isNotEmpty) {
+      if (!updatedData.containsKey("droppingPoint") ||
+          updatedData["droppingPoint"] == null ||
+          updatedData["droppingPoint"].toString().isEmpty) {
+        updatedData["droppingPoint"] = updatedData["toCity"];
+      }
+    } else if (updatedData.containsKey("droppingPoint") &&
+        updatedData["droppingPoint"] != null &&
+        updatedData["droppingPoint"].toString().isNotEmpty) {
+      updatedData["toCity"] = updatedData["droppingPoint"];
     }
 
-    print('Set complete ticket data: $data');
+    ticketData.value = updatedData;
+
+    print('Set complete ticket data: ${ticketData}');
+
+    // Update total price after setting data
+    updateTotalPrice();
+
     isLoading.value = false;
   }
 
@@ -526,6 +627,7 @@ class TicketDetailsController extends GetxController {
       await loadSeatDetails();
       addDefaultDateInfo();
       ensureRequiredFields();
+      updateTotalPrice();
     } catch (e) {
       print('Error refreshing ticket data: $e');
     } finally {
@@ -560,6 +662,9 @@ class TicketDetailsController extends GetxController {
         bookingError.value = 'Authentication required. Please login first.';
         return false;
       }
+
+      // Make sure total price is updated before booking
+      updateTotalPrice();
 
       // Create passenger info from ticket data
       final passengerInfo = PassengerInfo.fromTicketData(ticketData);

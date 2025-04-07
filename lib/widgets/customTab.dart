@@ -1,11 +1,8 @@
-import 'package:eticket_atc/controller/customTabController.dart';
+import 'package:eticket_atc/controller/ProfileController/customTabController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:eticket_atc/widgets/microwidgets/profile/cancelTicketTab.dart';
 import 'package:eticket_atc/widgets/microwidgets/profile/insightTab.dart';
 import 'package:eticket_atc/widgets/microwidgets/profile/profileTab.dart';
-import 'package:eticket_atc/widgets/microwidgets/profile/ticketTab.dart';
-import 'package:eticket_atc/widgets/microwidgets/profile/totalbuyTab.dart';
 
 class CustomTabBar extends StatelessWidget {
   CustomTabBar({super.key});

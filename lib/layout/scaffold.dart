@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:eticket_atc/controller/authController.dart';
+import 'package:eticket_atc/controller/AuthController/authController.dart';
 
 class AppScaffold extends StatefulWidget {
   final Widget child;

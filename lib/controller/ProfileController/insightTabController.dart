@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:eticket_atc/controller/authController.dart';
+import 'package:eticket_atc/controller/AuthController/authController.dart';
 
 class InsightController extends GetxController {
   final Rx<bool> isLoading = true.obs;

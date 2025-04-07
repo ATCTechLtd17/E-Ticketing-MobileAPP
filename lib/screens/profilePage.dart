@@ -1,8 +1,9 @@
-import 'package:eticket_atc/controller/authController.dart';
+import 'package:eticket_atc/controller/AuthController/authController.dart';
 import 'package:eticket_atc/widgets/customTab.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:eticket_atc/controller/profileController.dart';
+import 'package:eticket_atc/controller/ProfileController/profileController.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfilePage extends StatelessWidget {
   final String contactNumber;
@@ -38,16 +39,7 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Profile"),
         backgroundColor: Colors.lightBlue[100],
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              // Use AuthController to handle logout
-              await authController.logout();
-              Get.offAllNamed('/login');
-            },
-          ),
-        ],
+        
       ),
       body: SafeArea(
         child: Obx(() {
@@ -101,7 +93,7 @@ class ProfilePage extends StatelessWidget {
                  CustomTabBar(),
                 const SizedBox(height: 24),
                 _buildSectionHeader("Account Management"),
-                _buildAccountOptions(authController),
+                _buildAccountOptions(context,authController),
                 const SizedBox(height: 24),
                 const Center(
                   child: Text(
@@ -152,7 +144,7 @@ class ProfilePage extends StatelessWidget {
                 user.contactNumber,
                 style: const TextStyle(color: Colors.grey),
               ),
-              TextButton(
+             /* TextButton(
                 onPressed: () {
                   // Use AuthController's token to pass to edit profile page
                   Get.toNamed('/edit-profile', arguments: {
@@ -161,7 +153,7 @@ class ProfilePage extends StatelessWidget {
                   });
                 },
                 child: const Text("Edit Profile"),
-              ),
+              ),*/
             ],
           ),
         ),
@@ -224,7 +216,7 @@ class ProfilePage extends StatelessWidget {
 
   
 
-  Widget _buildAccountOptions(AuthController authController) {
+  Widget _buildAccountOptions(BuildContext context, AuthController authController) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -257,7 +249,8 @@ class ProfilePage extends StatelessWidget {
             title: const Text("Logout"),
             onTap: () async {
               await authController.logout();
-              Get.offAllNamed('/login');
+              GoRouter.of(context).push('/login');
+             
             },
           ),
         ],

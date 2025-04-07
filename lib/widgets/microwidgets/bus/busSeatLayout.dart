@@ -1,4 +1,4 @@
-import 'package:eticket_atc/controller/seatController.dart';
+import 'package:eticket_atc/controller/BusController/seatController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

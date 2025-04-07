@@ -1,5 +1,5 @@
-import 'package:eticket_atc/controller/authController.dart';
-import 'package:eticket_atc/controller/loginController.dart';
+import 'package:eticket_atc/controller/AuthController/authController.dart';
+import 'package:eticket_atc/controller/AuthController/loginController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -131,7 +131,7 @@ class LoginPage extends StatelessWidget {
                         : const Text('Login',
                             style: TextStyle(color: Colors.white)),
                   )),
-              TextButton(
+             /* TextButton(
                 onPressed: () {
                   Get.snackbar(
                     "Forgot Password",
@@ -142,7 +142,7 @@ class LoginPage extends StatelessWidget {
                 },
                 child: const Text('Forgot Password?',
                     style: TextStyle(color: Colors.lightBlue)),
-              ),
+              ),*/
               TextButton(
                 onPressed: () => context.go('/register'),
                 child: const Text("Don't have an account? Sign up",

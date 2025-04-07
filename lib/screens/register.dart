@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-import 'package:eticket_atc/controller/registrationController.dart';
+import 'package:eticket_atc/controller/AuthController/registrationController.dart';
 
 class RegisterPage extends StatelessWidget {
   final RegisterController registerController = Get.put(RegisterController());

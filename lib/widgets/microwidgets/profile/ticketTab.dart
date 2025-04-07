@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:eticket_atc/controller/profileController.dart';
-import 'package:eticket_atc/controller/ticketDetailsController.dart';
+import 'package:eticket_atc/controller/ProfileController/profileController.dart';
+import 'package:eticket_atc/controller/TicketController/ticketDetailsController.dart';
 import 'package:eticket_atc/screens/ticketDetails.dart';
 import 'package:intl/intl.dart';
 

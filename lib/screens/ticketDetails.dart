@@ -1,5 +1,10 @@
-import 'package:eticket_atc/controller/ticketDetailsController.dart';
+import 'package:eticket_atc/controller/TicketController/ticketDetailsController.dart';
 import 'package:eticket_atc/widgets/microwidgets/pdfGenerate.dart';
+import 'package:eticket_atc/widgets/microwidgets/ticketDetails/bulletPoint.dart';
+import 'package:eticket_atc/widgets/microwidgets/ticketDetails/journeyDetails.dart';
+import 'package:eticket_atc/widgets/microwidgets/ticketDetails/passengerInfo.dart';
+import 'package:eticket_atc/widgets/microwidgets/ticketDetails/seatDetails.dart';
+import 'package:eticket_atc/widgets/microwidgets/ticketDetails/sectionTitle.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,12 +15,11 @@ class TicketDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Ensure TicketDetailsController is registered
     if (!Get.isRegistered<TicketDetailsController>()) {
       Get.put(TicketDetailsController());
     }
 
-    final TicketDetailsController ticketController =
+    final TicketDetailsController ticketDetailsController =
         Get.find<TicketDetailsController>();
 
     return Scaffold(
@@ -26,7 +30,7 @@ class TicketDetailsPage extends StatelessWidget {
         elevation: 0,
       ),
       body: Obx(() {
-        if (ticketController.isLoading.value) {
+        if (ticketDetailsController.isLoading.value) {
           return const Center(
             child: CircularProgressIndicator(
               color: Colors.lightBlue,
@@ -34,7 +38,7 @@ class TicketDetailsPage extends StatelessWidget {
           );
         }
 
-        if (ticketController.errorMessage.value.isNotEmpty) {
+        if (ticketDetailsController.errorMessage.value.isNotEmpty) {
           return Center(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -42,7 +46,7 @@ class TicketDetailsPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    ticketController.errorMessage.value,
+                    ticketDetailsController.errorMessage.value,
                     textAlign: TextAlign.center,
                     style: const TextStyle(color: Colors.red),
                   ),
@@ -51,7 +55,8 @@ class TicketDetailsPage extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.lightBlue[200],
                     ),
-                    onPressed: () => ticketController.refreshTicketData(),
+                    onPressed: () =>
+                        ticketDetailsController.refreshTicketData(),
                     child: const Text("Retry"),
                   ),
                 ],
@@ -60,37 +65,44 @@ class TicketDetailsPage extends StatelessWidget {
           );
         }
 
-        final ticketData = ticketController.ticketData;
+        final ticketData = ticketDetailsController.ticketData;
 
         // Extract ticket information
-        // Extract ticket information - This is the updated section
-        final passengerName = ticketController.getStringValue("passengerName");
-        final email = ticketController.getStringValue("email");
-        final phone = ticketController.getStringValue("phone");
-        final gender = ticketController.getStringValue("gender");
-        final fromCity = ticketController.getStringValue("fromCity");
-        final toCity = ticketController.getStringValue("toCity");
-        final issueDate = ticketController.getStringValue("issueDate");
-        final journeyDate = ticketController.getStringValue("journeyDate");
-        final boardingPoint = ticketController.getStringValue("boardingPoint");
-        final droppingPoint = ticketController.getStringValue("droppingPoint");
-        final departureTime = ticketController.getStringValue("departureTime");
-        final arrivalTime = ticketController.getStringValue("arrivalTime");
-        final seatNumbers = ticketController.getListValue("seatNumbers");
-        final originalPrice = ticketController.getStringValue("originalPrice");
-        final busName = ticketController.getStringValue("busName",
+        final passengerName =
+            ticketDetailsController.getStringValue("passengerName");
+        final email = ticketDetailsController.getStringValue("email");
+        final phone = ticketDetailsController.getStringValue("phone");
+        final gender = ticketDetailsController.getStringValue("gender");
+        final fromCity = ticketDetailsController.getStringValue("fromCity");
+        final toCity = ticketDetailsController.getStringValue("toCity");
+        final issueDate = ticketDetailsController.getStringValue("issueDate");
+        final journeyDate =
+            ticketDetailsController.getStringValue("journeyDate");
+        final boardingPoint =
+            ticketDetailsController.getStringValue("boardingPoint");
+        final droppingPoint =
+            ticketDetailsController.getStringValue("droppingPoint");
+        final departureTime =
+            ticketDetailsController.getStringValue("departureTime");
+        final arrivalTime =
+            ticketDetailsController.getStringValue("arrivalTime");
+        final seatNumbers = ticketDetailsController.getListValue("seatNumbers");
+        final totalPrice =
+            ticketDetailsController.getStringValue("totalPrice");
+        final busName = ticketDetailsController.getStringValue("busName",
             defaultValue: "Hanif Enterprise");
-        final busType = ticketController.getStringValue("busType");
-        final coachType = ticketController.getStringValue("coachType");
-        final ticketId = ticketController.getStringValue("ticketId");
-        final transactionId = ticketController.getStringValue("transactionId");
+        final busType = ticketDetailsController.getStringValue("busType");
+        final coachType = ticketDetailsController.getStringValue("coachType");
+        final ticketId = ticketDetailsController.getStringValue("ticketId");
+        final transactionId =
+            ticketDetailsController.getStringValue("transactionId");
 
         return SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
               // Booking status notification
-              if (ticketController.bookingSuccess.value)
+              if (ticketDetailsController.bookingSuccess.value)
                 Container(
                   width: double.infinity,
                   margin: const EdgeInsets.only(bottom: 16),
@@ -124,8 +136,8 @@ class TicketDetailsPage extends StatelessWidget {
                 ),
 
               // Booking error notification
-              if (ticketController.bookingError.value.isNotEmpty &&
-                  !ticketController.bookingSuccess.value)
+              if (ticketDetailsController.bookingError.value.isNotEmpty &&
+                  !ticketDetailsController.bookingSuccess.value)
                 Container(
                   width: double.infinity,
                   margin: const EdgeInsets.only(bottom: 16),
@@ -136,7 +148,7 @@ class TicketDetailsPage extends StatelessWidget {
                     border: Border.all(color: Colors.red),
                   ),
                   child: Text(
-                    "Booking Error: ${ticketController.bookingError.value}",
+                    "Booking Error: ${ticketDetailsController.bookingError.value}",
                     style: const TextStyle(
                       color: Colors.red,
                       fontWeight: FontWeight.bold,
@@ -148,8 +160,7 @@ class TicketDetailsPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  border:
-                      Border.all(color: Colors.lightBlue[100]!, width: 1),
+                  border: Border.all(color: Colors.lightBlue[100]!, width: 1),
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
@@ -239,171 +250,45 @@ class TicketDetailsPage extends StatelessWidget {
                     const SizedBox(height: 20),
 
                     // Journey Info Card
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Colors.lightBlue.shade300, width: 1),
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.grey[50],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _buildLabelValue("From", fromCity,
-                                        labelColor: Colors.lightBlue[800]),
-                                    const SizedBox(height: 4),
-                                    _buildLabelValue("Boarding", boardingPoint,
-                                        labelColor: Colors.lightBlue[800]),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.all(3),
-                                decoration: BoxDecoration(
-                                  color: Colors.lightBlue[200],
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(Icons.arrow_forward,
-                                    color: Colors.white),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    _buildLabelValue("To", toCity,
-                                        alignment: CrossAxisAlignment.end,
-                                        labelColor: Colors.lightBlue[800]),
-                                    const SizedBox(height: 4),
-                                    _buildLabelValue("Dropping", droppingPoint,
-                                        alignment: CrossAxisAlignment.end,
-                                        labelColor: Colors.lightBlue[800]),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 12),
-                          Divider(color: Colors.lightBlue[300]),
-                          const SizedBox(height: 12),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              _buildLabelValue("Date", journeyDate,
-                                  labelColor: Colors.lightBlue[800]),
-                              _buildLabelValue("Departure", departureTime,
-                                  labelColor: Colors.lightBlue[800]),
-                              if (arrivalTime.isNotEmpty)
-                                _buildLabelValue("Arrival", arrivalTime,
-                                    labelColor: Colors.lightBlue[800]),
-                            ],
-                          ),
-                          if (busType.isNotEmpty || coachType.isNotEmpty)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 12.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  if (busType.isNotEmpty)
-                                    _buildLabelValue("Bus Type", busType,
-                                        labelColor: Colors.lightBlue[800]),
-                                  if (coachType.isNotEmpty)
-                                    _buildLabelValue("Coach", coachType,
-                                        labelColor: Colors.lightBlue[800]),
-                                ],
-                              ),
-                            ),
-                        ],
-                      ),
+                    JourneyDetails(
+                      fromCity: fromCity,
+                      toCity: toCity,
+                      boardingPoint: boardingPoint,
+                      droppingPoint: droppingPoint,
+                      journeyDate: journeyDate,
+                      departureTime: departureTime,
+                      arrivalTime: arrivalTime,
+                      busType: busType,
+                      coachType: coachType,
                     ),
-
                     const SizedBox(height: 20),
 
                     // Passenger Info
-                    _buildSectionTitle("Passenger Details"),
                     const SizedBox(height: 8),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.lightBlue.shade300),
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.grey[50],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildLabelValue("Name", passengerName,
-                              labelColor: Colors.lightBlue[800]),
-                          if (email.isNotEmpty)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
-                              child: _buildLabelValue("Email", email,
-                                  labelColor: Colors.lightBlue[800]),
-                            ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4.0),
-                            child: _buildLabelValue("Phone", phone,
-                                labelColor: Colors.lightBlue[800]),
-                          ),
-                          if (gender.isNotEmpty)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
-                              child: _buildLabelValue("Gender", gender,
-                                  labelColor: Colors.lightBlue[800]),
-                            ),
-                        ],
-                      ),
+
+                    PassengerInfo(
+                      passengerName: passengerName,
+                      email: email,
+                      phone: phone,
+                      gender: gender,
                     ),
 
                     const SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
-                    // Seat Info
-                    _buildSectionTitle("Seat Information"),
+                    
                     const SizedBox(height: 8),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.lightBlue.shade300),
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.grey[50],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildLabelValue(
-                              "Seat Number",
-                              // ignore: unnecessary_type_check
-                              seatNumbers is List
-                                  ? seatNumbers.join(', ')
-                                  : seatNumbers.toString(),
-                              labelColor: Colors.lightBlue[800]),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4.0),
-                            child: _buildLabelValue("Price", "৳ $originalPrice",
-                                labelColor: Colors.lightBlue[800]),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4.0),
-                            child: _buildLabelValue("Issue Date", issueDate,
-                                labelColor: Colors.lightBlue[800]),
-                          ),
-                        ],
-                      ),
+                    // Replace the original seat information section:
+
+
+                    SeatDetails(
+                      seatNumbers: seatNumbers,
+                      totalPrice: totalPrice,
+                      issueDate: issueDate,
                     ),
 
                     const SizedBox(height: 24),
 
-                    // Company Info
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
@@ -426,7 +311,7 @@ class TicketDetailsPage extends StatelessWidget {
                     const SizedBox(height: 20),
 
                     // Terms & Conditions
-                    _buildSectionTitle("Terms & Conditions"),
+                    const SectionTitleWidget(title: "Terms & Conditions"),
                     const SizedBox(height: 8),
                     Container(
                       padding: const EdgeInsets.all(8),
@@ -437,15 +322,23 @@ class TicketDetailsPage extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          _buildBullet(
-                              "This ticket has been issued by actechltd.com on behalf of the bus operator."),
-                          _buildBullet(
-                              "Please carry a printed copy of this e-ticket."),
-                          _buildBullet(
-                              "Please reach the boarding point 15 minutes prior to departure."),
-                          _buildBullet(
-                              "THIS TICKET IS NON-TRANSFERABLE / NON-CANCELLABLE. IT CANNOT BE CHANGED / EXCHANGED.",
-                              isHighlighted: true),
+                          BulletPointWidget(
+                            text:
+                                "This ticket has been issued by actechltd.com on behalf of the bus operator.",
+                          ),
+                          BulletPointWidget(
+                            text:
+                                "Please carry a printed copy of this e-ticket.",
+                          ),
+                          BulletPointWidget(
+                            text:
+                                "Please reach the boarding point 15 minutes prior to departure.",
+                          ),
+                          BulletPointWidget(
+                            text:
+                                "THIS TICKET IS NON-TRANSFERABLE / NON-CANCELLABLE. IT CANNOT BE CHANGED / EXCHANGED.",
+                            isHighlighted: true,
+                          ),
                         ],
                       ),
                     ),
@@ -457,13 +350,14 @@ class TicketDetailsPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         if (showBookButton &&
-                            !ticketController.bookingSuccess.value)
+                            !ticketDetailsController.bookingSuccess.value)
                           Expanded(
                             child: ElevatedButton.icon(
-                              onPressed: ticketController.isBooking.value
+                              onPressed: ticketDetailsController.isBooking.value
                                   ? null
-                                  : () => _handleBookTicket(ticketController),
-                              icon: ticketController.isBooking.value
+                                  : () => _handleBookTicket(
+                                      ticketDetailsController),
+                              icon: ticketDetailsController.isBooking.value
                                   ? const SizedBox(
                                       width: 20,
                                       height: 20,
@@ -473,9 +367,10 @@ class TicketDetailsPage extends StatelessWidget {
                                       ),
                                     )
                                   : const Icon(Icons.confirmation_number),
-                              label: Text(ticketController.isBooking.value
-                                  ? "Booking..."
-                                  : "Book Ticket"),
+                              label: Text(
+                                  ticketDetailsController.isBooking.value
+                                      ? "Booking..."
+                                      : "Book Ticket"),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.lightBlue[400],
                                 padding:
@@ -487,7 +382,7 @@ class TicketDetailsPage extends StatelessWidget {
                             ),
                           ),
                         if (!showBookButton ||
-                            ticketController.bookingSuccess.value)
+                            ticketDetailsController.bookingSuccess.value)
                           Expanded(
                             child: ElevatedButton.icon(
                               onPressed: () async {
@@ -568,82 +463,5 @@ class TicketDetailsPage extends StatelessWidget {
         snackPosition: SnackPosition.BOTTOM,
       );
     }
-  }
-
-  Widget _buildSectionTitle(String title) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-      decoration: BoxDecoration(
-        color: Colors.lightBlue[200],
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLabelValue(
-    String label,
-    String value, {
-    CrossAxisAlignment alignment = CrossAxisAlignment.start,
-    Color? labelColor,
-  }) {
-    return Column(
-      crossAxisAlignment: alignment,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            color: labelColor ?? Colors.grey.shade700,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 2),
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildBullet(String text, {bool isHighlighted = false}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 6.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            margin: const EdgeInsets.only(top: 4, right: 4),
-            width: 6,
-            height: 6,
-            decoration: BoxDecoration(
-              color: isHighlighted ? Colors.red : Colors.lightBlue[400],
-              shape: BoxShape.circle,
-            ),
-          ),
-          Expanded(
-            child: Text(
-              text,
-              style: TextStyle(
-                fontSize: 12,
-                color: isHighlighted ? Colors.red : Colors.black87,
-                fontWeight: isHighlighted ? FontWeight.bold : FontWeight.normal,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

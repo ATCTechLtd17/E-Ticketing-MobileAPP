@@ -1,11 +1,9 @@
-import 'package:eticket_atc/controller/busDetailsController.dart';
+import 'package:eticket_atc/controller/BusController/busDetailsController.dart';
 import 'package:eticket_atc/models/bus_model.dart';
 import 'package:eticket_atc/widgets/microwidgets/bus/busSeatLayout.dart';
 import 'package:eticket_atc/widgets/microwidgets/bus/dropdownUtils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-
 
 class BusDetails extends StatelessWidget {
   final Bus bus;
@@ -14,6 +12,7 @@ class BusDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Ensure defaultBoarding is passed to the controller
     final BusDetailsController busDetailsController = Get.put(
         BusDetailsController(bus: bus, defaultBoarding: defaultBoarding));
 
@@ -22,6 +21,11 @@ class BusDetails extends StatelessWidget {
       "busName": bus.busName,
       "busNumber": bus.busNumber,
       "ticketPrice": busDetailsController.ticketPrice.value,
+      // Add more fields to ensure they're passed to the ticket details
+      "fromCity": busDetailsController.selectedBoarding.value,
+      "toCity": busDetailsController.selectedDropping.value,
+      "boardingPoint": busDetailsController.selectedBoarding.value,
+      "droppingPoint": busDetailsController.selectedDropping.value,
     };
 
     return Scaffold(
@@ -69,6 +73,18 @@ class BusDetails extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                               color: Colors.lightBlue[700]!),
                         )),
+                    const SizedBox(height: 8),
+                    // Display currently selected boarding and dropping points for debugging
+                    Obx(() => Text(
+                          'From: ${busDetailsController.selectedBoarding.value}',
+                          style:
+                              TextStyle(fontSize: 14, color: Colors.grey[700]),
+                        )),
+                    Obx(() => Text(
+                          'To: ${busDetailsController.selectedDropping.value}',
+                          style:
+                              TextStyle(fontSize: 14, color: Colors.grey[700]),
+                        )),
                   ],
                 ),
               ),
@@ -97,7 +113,7 @@ class BusDetails extends StatelessWidget {
             BusSeatLayout(
               seatCapacity: bus.seatCapacity,
               busID: bus.id,
-              extraData: extraData, 
+              extraData: extraData,
             ),
           ],
         ),

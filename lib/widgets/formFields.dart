@@ -24,8 +24,7 @@ class FormFields extends StatelessWidget {
         children: [
           Container(
               padding: const EdgeInsets.all(10),
-              child:
-                  Stack(
+              child: Stack(
                 alignment: Alignment.center,
                 children: [
                   Row(
@@ -51,8 +50,7 @@ class FormFields extends StatelessWidget {
                               labelText: 'From',
                               prefixIcon: Icon(Icons.location_on_outlined),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)
-                              ),
+                                  borderRadius: BorderRadius.circular(10)),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.lightBlue),
                               ),
@@ -67,7 +65,7 @@ class FormFields extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(width: 50), // Space for the swap button
+                      SizedBox(width: 50), 
                       Flexible(
                         flex: 1,
                         child: OverlayContainer(
@@ -84,13 +82,11 @@ class FormFields extends StatelessWidget {
                             cursorColor: Colors.lightBlue,
                             controller: busSearchController.toController,
                             decoration: InputDecoration(
-
                               labelStyle: TextStyle(fontSize: 12),
                               labelText: 'To',
                               prefixIcon: Icon(Icons.location_on_outlined),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)
-                              ),
+                                  borderRadius: BorderRadius.circular(10)),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.lightBlue),
                               ),
@@ -107,11 +103,9 @@ class FormFields extends StatelessWidget {
                       ),
                     ],
                   ),
-
-                  
                   Positioned(
                     child: Transform.rotate(
-                      angle: math.pi / 2, 
+                      angle: math.pi / 2,
                       child: IconButton(
                         style: IconButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -138,53 +132,52 @@ class FormFields extends StatelessWidget {
                     ),
                   ),
                 ],
-              )
-
-              ),
+              )),
           const SizedBox(height: 10),
           Container(
             padding: const EdgeInsets.all(10),
             child: Row(
-  children: [
-    // Journey Date Picker
-    Flexible(
-      flex: 1,
-      child: Obx(() => DatePick(
-            label: 'Journey Date',
-            selectedDate: busSearchController.departureTime.value,
-            onDateSelected: (date) {
-              busSearchController.selectDepartureDate(date);
-            },
-            firstDate: DateTime.now(),
-            lastDate: DateTime.now().add(const Duration(days: 90)),
-          )),
-    ),
-    const SizedBox(width: 20),
-    // Return Date Picker (with opacity/ignore logic)
-    Flexible(
-      flex: 1,
-      child: Obx(() {
-        return Opacity(
-          opacity: busSearchController.isReturn.value ? 1.0 : 0.5,
-          child: IgnorePointer(
-            ignoring: !busSearchController.isReturn.value,
-            child: DatePick(
-              label: 'Return Date',
-              selectedDate: busSearchController.returnTime.value,
-              onDateSelected: (date) {
-                busSearchController.selectReturnDate(date);
-              },
-              firstDate: DateTime.now(),
-              lastDate: DateTime.now().add(const Duration(days: 90)),
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: Obx(() => DatePick(
+                        label: 'Journey Date',
+                        selectedDate: busSearchController.departureTime.value,
+                        onDateSelected: (date) {
+                          busSearchController.selectDepartureDate(date);
+                        },
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime.now().add(const Duration(days: 90)),
+                        autoConfirm: true, 
+                      )),
+                ),
+                const SizedBox(width: 20),
+// Return Date Picker with autoConfirm
+                Flexible(
+                  flex: 1,
+                  child: Obx(() {
+                    return Opacity(
+                      opacity: busSearchController.isReturn.value ? 1.0 : 0.5,
+                      child: IgnorePointer(
+                        ignoring: !busSearchController.isReturn.value,
+                        child: DatePick(
+                          label: 'Return Date',
+                          selectedDate: busSearchController.returnTime.value,
+                          onDateSelected: (date) {
+                            busSearchController.selectReturnDate(date);
+                          },
+                          firstDate: DateTime.now(),
+                          lastDate:
+                              DateTime.now().add(const Duration(days: 90)),
+                          autoConfirm: true, 
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+                const SizedBox(width: 20),
+              ],
             ),
-          ),
-        );
-      }),
-    ),
-  ],
-),
-
-          
           ),
         ],
       ),

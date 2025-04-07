@@ -1,4 +1,4 @@
-import 'package:eticket_atc/controller/insightTabController.dart';
+import 'package:eticket_atc/controller/ProfileController/insightTabController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:fl_chart/fl_chart.dart';

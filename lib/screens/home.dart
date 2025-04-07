@@ -1,4 +1,4 @@
-import 'package:eticket_atc/controller/authController.dart';
+import 'package:eticket_atc/controller/AuthController/authController.dart';
 import 'package:eticket_atc/screens/FormPage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 class Home extends StatefulWidget {
   final Map<String, dynamic>? userData;
 
-  const Home({Key? key, this.userData}) : super(key: key);
+  const Home({super.key, this.userData});
 
   @override
   _HomeState createState() => _HomeState();

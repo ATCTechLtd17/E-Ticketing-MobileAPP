@@ -1,5 +1,5 @@
-import 'package:eticket_atc/controller/authController.dart';
-import 'package:eticket_atc/controller/ticketDetailsController.dart';
+import 'package:eticket_atc/controller/AuthController/authController.dart';
+import 'package:eticket_atc/controller/TicketController/ticketDetailsController.dart';
 import 'package:eticket_atc/layout/scaffold.dart';
 import 'package:eticket_atc/models/bus_model.dart';
 import 'package:eticket_atc/screens/busDetails.dart';
@@ -51,8 +51,8 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state, child) {
         // Wrap every route with our app scaffold
         return AppScaffold(
-          child: child,
           currentPath: state.matchedLocation,
+          child: child,
         );
       },
       routes: [

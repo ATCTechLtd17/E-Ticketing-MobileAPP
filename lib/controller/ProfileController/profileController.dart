@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:eticket_atc/controller/authController.dart';
+import 'package:eticket_atc/controller/AuthController/authController.dart';
 import 'package:eticket_atc/models/user_model.dart';
 import 'package:eticket_atc/services/auth_service.dart';
 import 'package:get/get.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:eticket_atc/controller/profileController.dart';
+import 'package:eticket_atc/controller/ProfileController/profileController.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({super.key});
